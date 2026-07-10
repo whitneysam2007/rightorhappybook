@@ -249,7 +249,7 @@ export default function Home() {
               },
               {
                 names: "Sean & Aly",
-                img: "/images/sean-aly.jpg",
+                img: "/images/sean-aly-2.png",
                 quote: "DEEP. LOVED IT. Sam changed my life with this principle. I highly recommend.",
               },
             ].map((t) => (
