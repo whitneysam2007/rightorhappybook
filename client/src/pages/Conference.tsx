@@ -175,19 +175,19 @@ export default function Conference() {
           <div className="space-y-4">
             <blockquote className="border-l-2 border-primary/50 pl-4">
               <p className="text-sm text-muted-foreground italic">
-                "Sam's framework helped us stop overthinking and start being honest with each other. We've never been happier."
+                "This book truly guided me in making my most important life decision — to marry my beautiful and incredible wife. 12/10 recommend this book to anyone who continually finds themselves stuck in the world of dating."
               </p>
               <cite className="text-xs text-foreground/70 not-italic mt-1 block">— Jacob & Mik</cite>
             </blockquote>
             <blockquote className="border-l-2 border-primary/50 pl-4">
               <p className="text-sm text-muted-foreground italic">
-                "We both read the book before we met. It gave us a shared language from day one. We skipped the games entirely."
+                "This book changed my perspective on what dating is truly about and who it is about. It gave me the opportunity to change and see the best person who was right in front of me."
               </p>
               <cite className="text-xs text-foreground/70 not-italic mt-1 block">— Maddy & Skyler</cite>
             </blockquote>
             <blockquote className="border-l-2 border-primary/50 pl-4">
               <p className="text-sm text-muted-foreground italic">
-                "After years of bad dates, Sam's approach finally made sense. We found each other by being ourselves."
+                "DEEP. LOVED IT. Sam changed my life with this principle. I highly recommend."
               </p>
               <cite className="text-xs text-foreground/70 not-italic mt-1 block">— Sean & Aly</cite>
             </blockquote>
