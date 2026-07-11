@@ -55,9 +55,7 @@ export default function Course() {
               </div>
             </div>
             <div className="bg-card border border-primary/30 rounded-lg p-8 inline-block">
-              <p className="text-sm text-muted-foreground uppercase tracking-wider mb-2">One-Time Payment</p>
-              <p className="text-5xl font-bold text-primary mb-2">$49</p>
-              <p className="text-sm text-muted-foreground mb-6">Lifetime access. No subscription.</p>
+              <p className="text-sm text-muted-foreground mb-6">Lifetime access. One payment. No subscription.</p>
               <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer">
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider px-10">
                   Enroll Now <ArrowRight className="ml-2 h-4 w-4" />
@@ -137,10 +135,9 @@ export default function Course() {
             One payment. Lifetime access. No subscriptions, no upsells — just the tools you need to date authentically.
           </p>
           <div className="bg-background border border-primary/30 rounded-lg p-8 max-w-sm mx-auto">
-            <p className="text-4xl font-bold text-primary mb-4">$49</p>
             <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer" className="block">
               <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider">
-                Enroll Now — $49
+                Enroll Now
               </Button>
             </a>
             <p className="text-xs text-muted-foreground mt-4">You'll be taken to the course platform to complete enrollment.</p>

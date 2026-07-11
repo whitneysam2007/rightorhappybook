@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, GraduationCap, Download, CheckCircle } from "lucide-react";
+import { ArrowRight, BookOpen, GraduationCap, Download, CheckCircle, Instagram } from "lucide-react";
 
 export default function Conference() {
   const [email, setEmail] = useState("");
@@ -103,7 +103,6 @@ export default function Conference() {
                 <p className="text-sm text-primary/90 font-medium mb-2">
                   Enroll now and get a free e-copy of the book included.
                 </p>
-                <p className="text-primary font-bold text-lg mb-4">$49</p>
                 <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer">
                   <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider text-sm px-6">
                     Enroll Now <ArrowRight className="ml-2 h-4 w-4" />
@@ -202,7 +201,16 @@ export default function Conference() {
 
       {/* Footer — minimal */}
       <footer className="px-6 pb-8">
-        <div className="max-w-lg mx-auto text-center border-t border-border/50 pt-6">
+        <div className="max-w-lg mx-auto border-t border-border/50 pt-6 flex flex-col items-center gap-3">
+          <a
+            href="https://www.instagram.com/howtodateauthentically"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+          >
+            <Instagram size={15} />
+            @howtodateauthentically
+          </a>
           <p className="text-xs text-muted-foreground">
             © 2026 Sam Whitney · <a href="/" className="hover:text-primary transition-colors">rightorhappybook.com</a>
           </p>
