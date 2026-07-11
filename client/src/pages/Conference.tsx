@@ -164,6 +164,26 @@ export default function Conference() {
             </div>
           </div>
 
+          {/* Instagram Follow Card */}
+          <div className="bg-gradient-to-r from-[#833ab4]/10 via-[#fd1d1d]/10 to-[#fcb045]/10 border border-primary/20 rounded-lg p-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-primary font-medium mb-1">Keep the momentum going</p>
+                <h2 className="font-semibold text-lg">Follow on Instagram</h2>
+                <p className="text-sm text-muted-foreground mt-1">Daily dating insights, real stories, and behind-the-scenes from Sam.</p>
+              </div>
+              <a
+                href="https://www.instagram.com/howtodateauthentically"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white font-semibold rounded-sm hover:opacity-90 transition-opacity text-sm whitespace-nowrap"
+              >
+                <Instagram size={16} />
+                @howtodateauthentically
+              </a>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -201,16 +221,7 @@ export default function Conference() {
 
       {/* Footer — minimal */}
       <footer className="px-6 pb-8">
-        <div className="max-w-lg mx-auto border-t border-border/50 pt-6 flex flex-col items-center gap-3">
-          <a
-            href="https://www.instagram.com/howtodateauthentically"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Instagram size={15} />
-            @howtodateauthentically
-          </a>
+        <div className="max-w-lg mx-auto border-t border-border/50 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
             © 2026 Sam Whitney · <a href="/" className="hover:text-primary transition-colors">rightorhappybook.com</a>
           </p>
