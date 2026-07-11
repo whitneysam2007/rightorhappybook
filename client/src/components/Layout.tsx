@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Instagram } from "lucide-react";
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   const [location] = useLocation();
@@ -92,9 +92,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Link href="/coaching" className="hover:text-primary transition-colors">Coaching</Link>
               <Link href="/conference" className="hover:text-primary transition-colors">Conference</Link>
             </div>
-            <p className="text-xs text-muted-foreground">
-              © 2026 Sam Whitney. All rights reserved.
-            </p>
+            <div className="flex flex-col items-center md:items-end gap-2">
+              <a
+                href="https://www.instagram.com/howtodateauthentically"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Instagram size={16} />
+                @howtodateauthentically
+              </a>
+              <p className="text-xs text-muted-foreground">
+                © 2026 Sam Whitney. All rights reserved.
+              </p>
+            </div>
           </div>
         </div>
       </footer>

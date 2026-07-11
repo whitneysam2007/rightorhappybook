@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Play, BookOpen, Mic, Users, Award, Loader2, X } from "lucide-react";
+import { ArrowRight, Play, BookOpen, Mic, Users, Award, Loader2, X, Instagram } from "lucide-react";
 import { toast } from "sonner";
 
 const VIDEO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663520822653/XzHygVphCqKdRzjxHXTGoD/c7885ba3368e45c1b99b60e706bba856_582436d4.MP4";
@@ -421,6 +421,30 @@ export default function Home() {
                 </Button>
               </form>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* Instagram Follow Section */}
+      <section className="section-padding bg-card border-t border-border/50">
+        <div className="container">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-primary font-medium mb-2">Stay Connected</p>
+              <h2 className="font-serif text-2xl md:text-3xl font-bold mb-2">Follow Along on Instagram</h2>
+              <p className="text-muted-foreground max-w-md">
+                Daily insights on authentic dating, relationship advice, and behind-the-scenes from the book and speaking tour.
+              </p>
+            </div>
+            <a
+              href="https://www.instagram.com/howtodateauthentically"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white font-semibold rounded-sm hover:opacity-90 transition-opacity uppercase tracking-wider text-sm whitespace-nowrap"
+            >
+              <Instagram size={20} />
+              @howtodateauthentically
+            </a>
           </div>
         </div>
       </section>
