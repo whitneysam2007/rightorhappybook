@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight, Play, BookOpen, Mic, Users, Award, Loader2, X, Instagram } from "lucide-react";
 import { toast } from "sonner";
 
@@ -78,6 +79,8 @@ export default function Home() {
   const [videoOpen, setVideoOpen] = useState(false);
 
   const [leadSubmitting, setLeadSubmitting] = useState(false);
+  const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactSubmitting, setContactSubmitting] = useState(false);
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,6 +119,32 @@ export default function Home() {
       document.body.removeChild(link);
     } finally {
       setLeadSubmitting(false);
+    }
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setContactSubmitting(true);
+
+    const formData = new URLSearchParams();
+    formData.append("form-name", "contact");
+    const fields = new FormData(e.currentTarget);
+    fields.forEach((value, key) => {
+      if (key !== "form-name") formData.append(key, String(value));
+    });
+
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString(),
+      });
+      setContactSubmitted(true);
+      toast.success("Your message has been sent.");
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setContactSubmitting(false);
     }
   };
 
@@ -445,6 +474,49 @@ export default function Home() {
               <Instagram size={20} />
               @howtodateauthentically
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="section-padding bg-card border-t border-border/50">
+        <div className="container">
+          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-20 items-start max-w-5xl mx-auto">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-primary font-medium mb-3">Get in Touch</p>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-5">Have a question or request?</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                Whether you’re interested in speaking, coaching, or simply want to share your story, send me a note below.
+              </p>
+            </div>
+            {contactSubmitted ? (
+              <div className="bg-primary/10 border border-primary/30 rounded-lg p-8 text-center">
+                <Award className="h-8 w-8 text-primary mx-auto mb-3" />
+                <p className="font-semibold text-primary text-lg mb-2">Thanks for reaching out.</p>
+                <p className="text-muted-foreground">I’ll be in touch as soon as I can.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleContactSubmit} data-netlify="true" name="contact" className="space-y-5">
+                <input type="hidden" name="form-name" value="contact" />
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <label htmlFor="contact-name" className="text-sm font-medium">Name</label>
+                    <Input id="contact-name" name="name" placeholder="Your name" required className="bg-background border-border" />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="contact-email" className="text-sm font-medium">Email</label>
+                    <Input id="contact-email" name="email" type="email" placeholder="you@example.com" required className="bg-background border-border" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="contact-message" className="text-sm font-medium">Message or request</label>
+                  <Textarea id="contact-message" name="message" placeholder="How can I help?" required className="bg-background border-border min-h-32 resize-y" />
+                </div>
+                <Button type="submit" disabled={contactSubmitting} className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider">
+                  {contactSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send Message"}
+                </Button>
+              </form>
+            )}
           </div>
         </div>
       </section>
