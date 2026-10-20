@@ -135,6 +135,29 @@ export default function Speaking() {
         </div>
       </section>
 
+      {/* Audience Feedback */}
+      <section className="section-padding bg-card">
+        <div className="container">
+          <div className="text-center mb-16">
+            <p className="text-sm uppercase tracking-[0.3em] text-primary font-medium mb-4">What Audiences Are Saying</p>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold">A Message That Stays With People</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              "Sam was an incredible speaker who completely changed the way I think about dating.",
+              "The Q&A was excellent. He quickly understood people’s questions and specific circumstances and gave thoughtful, relevant answers.",
+              "I loved the balance of presentation and Q&A. The message gave us a strong foundation, and the questions made it personal and applicable.",
+            ].map((quote) => (
+              <div key={quote} className="border border-border/50 rounded-lg p-8 hover:border-primary/30 transition-colors flex flex-col">
+                <p className="font-serif text-4xl text-primary leading-none mb-4">“</p>
+                <p className="text-muted-foreground leading-relaxed italic text-sm flex-1">{quote}</p>
+                <p className="text-xs uppercase tracking-wider text-primary/70 mt-6">Event attendee</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Booking Form */}
       <section id="booking" className="section-padding">
         <div className="container">

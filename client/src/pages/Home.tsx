@@ -350,6 +350,29 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Audience Feedback */}
+      <section className="section-padding bg-card">
+        <div className="container">
+          <div className="text-center mb-16">
+            <p className="text-sm uppercase tracking-[0.3em] text-primary font-medium mb-4">From the Audience</p>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold">A Different Way to Date</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              "Sam brought humor, honesty, and wisdom to a topic that can often feel discouraging. I left feeling hopeful about dating again.",
+              "This was one of the most helpful dating classes I have attended. It gave me practical tools while also changing the way I see people.",
+              "I have been discouraged by what dating has become, and Sam answered something deep in my heart about why dating can feel so difficult. This was an answer I had been searching for.",
+            ].map((quote) => (
+              <div key={quote} className="border border-border/50 rounded-lg p-8 hover:border-primary/30 transition-colors flex flex-col">
+                <p className="font-serif text-4xl text-primary leading-none mb-4">“</p>
+                <p className="text-muted-foreground leading-relaxed italic text-sm flex-1">{quote}</p>
+                <p className="text-xs uppercase tracking-wider text-primary/70 mt-6">Audience feedback</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Book Feature */}
       <section className="section-padding bg-card">
         <div className="container">
