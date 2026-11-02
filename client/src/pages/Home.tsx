@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight, Play, BookOpen, Mic, Users, Award, Loader2, X, Instagram } from "lucide-react";
 import { toast } from "sonner";
 
-const VIDEO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663520822653/XzHygVphCqKdRzjxHXTGoD/c7885ba3368e45c1b99b60e706bba856_582436d4.MP4";
+const VIDEO_URL = "/videos/sam-whitney-speaker-reel-jan-2026.mp4";
 
 function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string }) {
   const [count, setCount] = useState(0);
@@ -65,6 +65,9 @@ function VideoModal({ onClose }: { onClose: () => void }) {
           src={VIDEO_URL}
           controls
           autoPlay
+          playsInline
+          preload="metadata"
+          aria-label="Sam Whitney speaker reel"
           className="w-full rounded-lg shadow-2xl"
           style={{ maxHeight: "80vh" }}
         />
