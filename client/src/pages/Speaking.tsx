@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mic, Users, Calendar, CheckCircle, Loader2, ArrowRight } from "lucide-react";
+import { Mic, Users, Calendar, CheckCircle, Loader2, ArrowRight, Play } from "lucide-react";
 import { toast } from "sonner";
 
 const topics = [
@@ -92,11 +92,18 @@ export default function Speaking() {
                   <span>Available Globally</span>
                 </div>
               </div>
-              <a href="#booking">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider px-8">
-                  Inquire Now <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </a>
+              <div className="flex flex-wrap gap-4">
+                <a href="#booking">
+                  <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider px-8">
+                    Inquire Now <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </a>
+                <a href="#speaker-reel">
+                  <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10 font-semibold uppercase tracking-wider px-8">
+                    <Play className="mr-2 h-4 w-4" /> Watch Sam Speak
+                  </Button>
+                </a>
+              </div>
             </div>
             <div className="hidden md:grid grid-cols-2 gap-4">
               <img
@@ -108,6 +115,32 @@ export default function Speaking() {
                 src="/images/sam-speaking-2.jpg"
                 alt="Sam Whitney on stage"
                 className="w-full rounded-lg object-cover shadow-xl aspect-[3/4] mt-8"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Speaker Reel */}
+      <section id="speaker-reel" aria-labelledby="speaker-reel-heading" className="section-padding scroll-mt-24">
+        <div className="container">
+          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-8 lg:gap-14 items-center">
+            <div>
+              <p className="text-sm uppercase tracking-[0.3em] text-primary font-medium mb-4">See Sam in Action</p>
+              <h2 id="speaker-reel-heading" className="font-serif text-3xl md:text-5xl font-bold mb-6">Watch Sam Speak</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
+                A quick look at the energy and practical perspective Sam brings to conversations about dating and relationships.
+              </p>
+            </div>
+            <div className="overflow-hidden rounded-lg border border-primary/30 bg-black shadow-2xl">
+              <video
+                src="/videos/sam-whitney-speaker-reel-jan-2026.mp4"
+                poster="/images/sam-speaker-reel-poster.jpg"
+                controls
+                playsInline
+                preload="metadata"
+                aria-label="Sam Whitney speaker reel"
+                className="block w-full aspect-video object-contain"
               />
             </div>
           </div>

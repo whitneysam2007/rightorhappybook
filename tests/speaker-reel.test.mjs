@@ -7,6 +7,7 @@ import { resolve } from "node:path";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const reelPath = "videos/sam-whitney-speaker-reel-jan-2026.mp4";
 const source = readFileSync(resolve(root, "client/src/pages/Home.tsx"), "utf8");
+const speakingSource = readFileSync(resolve(root, "client/src/pages/Speaking.tsx"), "utf8");
 const video = readFileSync(resolve(root, "client/public", reelPath));
 
 // Run after the production build: node --test tests/speaker-reel.test.mjs
@@ -16,6 +17,23 @@ test("homepage uses the deployable local reel and inline mobile playback", () =>
   assert.ok(!source.includes("d2xsxph8kpxj0f.cloudfront.net"));
   assert.match(source, /<video\s+src=\{VIDEO_URL\}[\s\S]*?playsInline[\s\S]*?preload="metadata"/);
   assert.ok(source.includes("Watch Sam Speak"));
+});
+
+test("Speaking page reuses the same reel with native controls and inline playback", () => {
+  assert.ok(speakingSource.includes(`src="/${reelPath}"`));
+  assert.match(speakingSource, /<video[\s\S]*?controls[\s\S]*?playsInline[\s\S]*?preload="metadata"/);
+  assert.ok(!speakingSource.includes("autoPlay"), "does not play automatically on page load");
+  assert.ok(speakingSource.includes('href="#speaker-reel"'));
+  assert.ok(speakingSource.includes('id="speaker-reel"'));
+  assert.ok(speakingSource.includes('aria-labelledby="speaker-reel-heading"'));
+});
+
+test("Speaking reel has a lightweight poster included in the production build", () => {
+  const poster = "images/sam-speaker-reel-poster.jpg";
+  assert.ok(speakingSource.includes(`poster="/${poster}"`));
+  const original = readFileSync(resolve(root, "client/public", poster));
+  assert.ok(original.length > 0 && original.length < 200000);
+  assert.deepEqual(readFileSync(resolve(root, "dist", poster)), original);
 });
 
 test("reel is H.264 with AAC audio and fast-start metadata", () => {
