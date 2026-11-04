@@ -111,7 +111,7 @@ export default function Guide() {
             </form>
           )}
           <p className="text-xs text-muted-foreground mt-4">
-            I&apos;ll email the guide instantly. Unsubscribe anytime.
+            I&apos;ll check in later to see how the questions are working for you. Unsubscribe anytime.
           </p>
 
           <p className="text-muted-foreground leading-relaxed mt-10">
