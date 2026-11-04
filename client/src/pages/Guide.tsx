@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Download, Play } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
-// Landing page for the Meta ad campaign — single offer only.
-// No navigation, no book/course buttons competing with the form.
-// Video: replace VIDEO_PLACEHOLDER below with Sam's short video file
-// (for example, /videos/guide-landing-video.mp4) once he sends it.
-const VIDEO_PLACEHOLDER = "";
-
+// Landing page for the Meta ad campaign — stripped down, single offer only.
+// No video, no question list, no second call to action.
+// One email form, a short book note, a Covey quote, and a good-luck close.
 export default function Guide() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -57,52 +54,25 @@ export default function Guide() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero — one offer, form above the fold */}
-      <section className="pt-12 pb-8 px-6">
+      <section className="pt-16 pb-8 px-6">
         <div className="max-w-lg mx-auto text-center">
           <p className="text-sm uppercase tracking-[0.3em] text-primary font-medium mb-3">
             Free Guide · From How to Date Authentically
           </p>
           <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4 leading-tight">
-            20 questions that make dating feel less like a game
+            Put your email in, get the free questions guide
           </h1>
           <p className="text-muted-foreground leading-relaxed mb-8">
-            Real questions you can actually use on your next date, from the
-            appendix to Sam Whitney&apos;s book, plus what to do in the
-            awkward moments in between.
+            20 questions that make dating feel less like a game.
           </p>
 
-          {/* Video — Sam's short video goes here */}
-          <div className="mb-8 rounded-lg overflow-hidden border border-border/50 bg-card">
-            {VIDEO_PLACEHOLDER ? (
-              <video
-                src={VIDEO_PLACEHOLDER}
-                controls
-                playsInline
-                preload="metadata"
-                aria-label="Sam Whitney introduces the free dating questions guide"
-                className="w-full"
-              />
-            ) : (
-              <div className="aspect-video flex flex-col items-center justify-center gap-3 p-6 text-center">
-                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Play className="h-6 w-6 text-primary" />
-                </div>
-                <p className="font-semibold">Sam&apos;s short video goes here</p>
-                <p className="text-sm text-muted-foreground">
-                  60 to 90 seconds: the hook, what the guide helps you do on
-                  your next date, and how to get it free.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Form — email only */}
           {submitted ? (
             <div className="flex items-center justify-center gap-3 text-primary bg-primary/10 border border-primary/30 rounded-lg p-6">
               <CheckCircle className="h-5 w-5 flex-shrink-0" />
               <div className="text-left">
-                <p className="font-semibold text-sm">Your guide is downloading!</p>
+                <p className="font-semibold text-sm">
+                  Thank you — your guide is downloading!
+                </p>
                 <a
                   href="/HowtoDateAuthenticallyApendix.pdf"
                   target="_blank"
@@ -136,59 +106,58 @@ export default function Guide() {
                 disabled={submitting}
                 className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider text-sm px-6"
               >
-                {submitting ? "Sending..." : "Send Me the Questions"}
+                {submitting ? "Sending..." : "Get the Guide"}
               </Button>
             </form>
           )}
           <p className="text-xs text-muted-foreground mt-4">
-            I&apos;ll email the guide instantly, plus occasional notes.
-            Unsubscribe anytime.
+            I&apos;ll email the guide instantly. Unsubscribe anytime.
+          </p>
+
+          <p className="text-muted-foreground leading-relaxed mt-10">
+            Thank you for being here, and good luck out there. I hope these
+            questions help you find real connection.
           </p>
         </div>
       </section>
 
-      {/* What's inside */}
+      {/* Short book note */}
+      <section className="px-6 pb-8">
+        <div className="max-w-lg mx-auto text-center">
+          <p className="text-sm text-muted-foreground mb-3">
+            If you like the questions, the full framework is in the book.
+          </p>
+          <a
+            href="https://amzn.to/4flIlj8"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary/10 font-semibold uppercase tracking-wider text-sm px-6"
+            >
+              Get How to Date Authentically
+            </Button>
+          </a>
+        </div>
+      </section>
+
+      {/* Covey quote */}
       <section className="px-6 pb-12">
-        <div className="max-w-lg mx-auto space-y-4">
-          <h2 className="font-semibold text-lg text-center">What&apos;s inside</h2>
-          <div className="bg-card border border-border/50 rounded-lg p-6 space-y-3 text-sm text-muted-foreground">
-            <p>✓ 20 conversation questions from the book&apos;s appendix</p>
-            <p>✓ What to do when you want to tell someone you like them</p>
-            <p>✓ What to say when a first date gets awkward</p>
-            <p>✓ How to be straightforward about ending something</p>
-          </div>
+        <div className="max-w-lg mx-auto">
           <blockquote className="border-l-2 border-primary/50 pl-4">
             <p className="text-sm text-muted-foreground italic">
-              &ldquo;Sam brought humor, honesty, and wisdom to a topic that
-              can often feel discouraging. I left feeling hopeful about
-              dating again.&rdquo;
+              &ldquo;Sam Whitney is extraordinary, and his insights into
+              this are both incredibly timely and beautifully on target.
+              Just wonderful!&rdquo;
             </p>
             <cite className="text-xs text-foreground/70 not-italic mt-1 block">
-              — Audience feedback
+              — Stephen M.R. Covey
             </cite>
           </blockquote>
         </div>
       </section>
 
-      {/* Second form — same offer, no new choices */}
-      <section className="px-6 pb-12">
-        <div className="max-w-lg mx-auto text-center">
-          <p className="font-semibold mb-4">Ready to try one on your next date?</p>
-          {submitted ? (
-            <p className="text-sm text-primary">
-              You&apos;re in — your guide is downloading above.
-            </p>
-          ) : (
-            <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider text-sm px-6">
-                <Download className="mr-2 h-4 w-4" /> Get the Free Guide
-              </Button>
-            </a>
-          )}
-        </div>
-      </section>
-
-      {/* Footer — minimal */}
       <footer className="px-6 pb-8">
         <div className="max-w-lg mx-auto border-t border-border/50 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
