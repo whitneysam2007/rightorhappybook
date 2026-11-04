@@ -127,6 +127,18 @@ export default function Guide() {
           <p className="text-sm text-muted-foreground mb-3">
             If you like the questions, the full framework is in the book.
           </p>
+          <a href="/book" className="block mb-4">
+            <img
+              src="/images/book-cover.png"
+              alt="How to Date Authentically by Sam Whitney — learn more about the book"
+              className="w-40 mx-auto rounded-sm shadow-lg"
+            />
+          </a>
+          <p className="text-sm mb-4">
+            <a href="/book" className="text-primary hover:underline">
+              Learn more about the book
+            </a>
+          </p>
           <a
             href="https://amzn.to/4flIlj8"
             target="_blank"
