@@ -11,6 +11,7 @@ import Speaking from "./pages/Speaking";
 import Coaching from "./pages/Coaching";
 import Layout from "./components/Layout";
 import Conference from "./pages/Conference";
+import Guide from "./pages/Guide";
 
 function Router() {
   return (
@@ -35,6 +36,8 @@ function App() {
           <Switch>
             {/* Conference landing page — standalone, no nav/footer */}
             <Route path="/conference" component={Conference} />
+            {/* Guide landing page for the Meta ad campaign — standalone, no nav/footer */}
+            <Route path="/guide" component={Guide} />
             {/* All other pages use the main Layout */}
             <Route>
               <Layout>
