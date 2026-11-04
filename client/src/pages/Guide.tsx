@@ -63,7 +63,7 @@ export default function Guide() {
             Put your email in, get the free questions guide
           </h1>
           <p className="text-muted-foreground leading-relaxed mb-8">
-            20 questions that make dating feel less like a game.
+            20 questions that make dating feel less like a game. Enter your email and the guide will download instantly.
           </p>
 
           {submitted ? (
