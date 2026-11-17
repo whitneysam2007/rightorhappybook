@@ -5,7 +5,7 @@ import { Link, useParams } from "wouter";
 import { BookOpen, Check, ChevronRight, Clock, Play } from "lucide-react";
 import { LESSONS, MODULES, PDFS, lessonById } from "./data";
 import { useCourseState } from "./store";
-import { ApplyBlock, Chip, ChipRow, DARK_GOLD_TEXT, LIGHT_TOKENS, LessonNav, ModeBadge, VideoEmbed } from "./ui";
+import { ApplyBlock, Chip, ChipRow, LessonNav, ModeBadge, VideoEmbed } from "./ui";
 import {
   ActionPlan,
   GridTool,
@@ -77,7 +77,7 @@ function StoryChips() {
           type="button"
           onClick={addOwn}
           disabled={!draft.trim()}
-          className={`shrink-0 rounded-full border border-[oklch(0.55_0_0)] px-4 py-2.5 text-sm font-semibold ${DARK_GOLD_TEXT} disabled:opacity-40`}
+          className="shrink-0 rounded-full border border-primary/60 px-4 py-2.5 text-sm font-semibold text-primary disabled:opacity-40"
         >
           Add it
         </button>
@@ -152,8 +152,8 @@ export default function CoursePlayer() {
                   const l = lessonById(id);
                   const isDone = state.completed.includes(id);
                   return (
-                    <Link key={id} href={`/course/learn/${id}`} className={`flex items-center gap-3 rounded-lg border border-[oklch(0.65_0_0)] bg-[oklch(0.82_0_0)] p-4 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.8)] hover:border-primary/60 ${LIGHT_TOKENS}`}>
-                      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isDone ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                    <Link key={id} href={`/course/learn/${id}`} className="flex items-center gap-3 rounded-lg border border-[oklch(0.4_0_0)] bg-[oklch(0.2_0_0)] p-4 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.8)] hover:border-[oklch(0.55_0_0)]">
+                      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isDone ? "bg-primary text-primary-foreground" : "bg-primary/15 text-primary"}`}>
                         {isDone ? <Check className="h-4 w-4" /> : <span className="text-xs font-bold">{id}</span>}
                       </span>
                       <span className="flex-1">
@@ -179,7 +179,7 @@ export default function CoursePlayer() {
   const mod = MODULES[lesson.module - 1];
   return (
     <div className="container py-8">
-      <div className="mx-auto max-w-2xl">
+      <div className="relative mx-auto max-w-2xl">
         <Link href="/course/learn" className="text-sm text-muted-foreground hover:text-foreground">← All lessons</Link>
         <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
           Module {lesson.module} — {mod.title}
@@ -189,8 +189,10 @@ export default function CoursePlayer() {
           <ModeBadge mode={lesson.mode} />
           {lesson.minutes && <span className="text-sm text-muted-foreground">{lesson.minutes}</span>}
         </div>
+        {/* Gold's one thin accent on the lesson itself: a hairline rule under the header. */}
+        <div aria-hidden className="mt-5 h-px w-full bg-primary/50" />
 
-        <div className={`mt-8 rounded-2xl border border-[oklch(0.65_0_0)] bg-[oklch(0.82_0_0)] p-5 shadow-[0_24px_60px_-16px_rgba(0,0,0,0.85)] [&>*:first-child]:mt-0 sm:p-7 ${LIGHT_TOKENS}`}>
+        <div className="mt-8 rounded-2xl border border-[oklch(0.4_0_0)] bg-[oklch(0.2_0_0)] p-5 shadow-[0_28px_70px_-18px_rgba(0,0,0,0.9)] [&>*:first-child]:mt-0 sm:p-7">
           <LessonBody id={lesson.id} state={state} update={update} toggleIn={toggleIn} />
         </div>
 

@@ -20,7 +20,7 @@ import {
   WHY_HERE,
 } from "./data";
 import { buildActionPlanText, essentials, gridTopTwo, type CourseState, type Reflection } from "./store";
-import { Chip, ChipRow, DARK_GOLD_TEXT, SavedNote } from "./ui";
+import { Chip, ChipRow, SavedNote } from "./ui";
 
 type Props = {
   state: CourseState;
@@ -64,7 +64,7 @@ export function SignsTool({ state, toggleIn }: Props) {
           </Chip>
         ))}
       </ChipRow>
-      <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
+      <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
         {state.signs.length === 0
           ? "Tap the ones that sound like you. This is just for you."
           : "Okay. Now you can see it. The next few lessons are where we start to take this apart — first your story, then your lists."}
@@ -93,7 +93,7 @@ export function StoryTool({ state, update }: Props) {
           <button key={i} type="button" onClick={() => setStep(i)} className={`h-1.5 flex-1 rounded-full ${i <= step ? "bg-primary" : "bg-muted"}`} aria-label={`Go to question ${i + 1}`} />
         ))}
       </div>
-      <p className={`text-xs font-bold uppercase tracking-[0.15em] ${DARK_GOLD_TEXT}`}>
+      <p className="text-xs font-bold uppercase tracking-[0.15em] text-primary">
         {q.section} · Question {step + 1} of {total}
       </p>
       <h3 className="text-xl font-semibold leading-snug">{q.text}</h3>
@@ -125,7 +125,7 @@ export function StoryTool({ state, update }: Props) {
         />
       )}
       {step === total - 1 && (
-        <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
+        <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
           The last question is the one that matters most. Your answer goes straight into your action plan at the end of the course.
         </div>
       )}
@@ -221,7 +221,7 @@ export function NeedsNopesTool({ state, update }: Props) {
 
       {step === 3 && (
         <div className="space-y-4">
-          <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
+          <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
             <p className="font-semibold">What you&rsquo;re left with</p>
             <p className="mt-2"><span className="font-semibold">Needs:</span> {ess.needs.join(", ") || "—"}</p>
             <p><span className="font-semibold">True nopes:</span> {ess.nopes.join(", ") || "—"}</p>
@@ -252,13 +252,13 @@ export function MantraBuilder({ state, update }: Props) {
         onChange={(e) => update({ mantra: e.target.value })}
         className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm leading-relaxed"
       />
-      <button type="button" onClick={() => update({ mantra: SAM_MANTRA })} className={`text-sm ${DARK_GOLD_TEXT} hover:underline`}>Start over from Sam&rsquo;s version</button>
+      <button type="button" onClick={() => update({ mantra: SAM_MANTRA })} className="text-sm text-primary hover:underline">Start over from Sam&rsquo;s version</button>
       <div>
         <label htmlFor="mantra-date" className="text-sm font-semibold">My next date is…</label>
         <input id="mantra-date" type="text" value={state.mantraDate} onChange={(e) => update({ mantraDate: e.target.value })} placeholder="e.g. Friday, with Alex" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
         <p className="mt-1 text-sm text-muted-foreground">Say your mantra before it.</p>
       </div>
-      <div className="rounded-lg border border-border bg-card p-4 text-sm">That&rsquo;s yours now. Say it before your next date.</div>
+      <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm">That&rsquo;s yours now. Say it before your next date.</div>
       <SavedNote />
     </div>
   );
@@ -280,7 +280,7 @@ export function ListeningTool({ state, update, toggleIn }: Props) {
           <Chip key={t} on={state.listenFocus.includes(i)} onClick={() => toggleIn("listenFocus", i, 2)}>{t}</Chip>
         ))}
       </ChipRow>
-      <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
+      <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
         Here&rsquo;s what you&rsquo;re working on: {state.listenFocus.map((i) => LISTENING_TIPS[i]).join(", ") || "—"}
       </div>
       <p className="text-sm text-muted-foreground">
@@ -301,7 +301,7 @@ export function QuestionDeck({ state, toggleIn }: Props) {
           <Chip key={q} on={state.questions.includes(i)} onClick={() => toggleIn("questions", i, 3)}>{q}</Chip>
         ))}
       </ChipRow>
-      <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
+      <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
         And here are your 3 questions: {state.questions.map((i) => DECK_QUESTIONS[i]).join(" · ") || "—"}
       </div>
       <SavedNote />
@@ -355,7 +355,7 @@ export function ReflectionTool({ state, update }: Props) {
           <button type="button" onClick={save} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">Save this reflection</button>
         )}
       </div>
-      {justSaved && <p className={`text-sm ${DARK_GOLD_TEXT}`}>Saved. Come back and do it again after your next date.</p>}
+      {justSaved && <p className="text-sm text-primary">Saved. Come back and do it again after your next date.</p>}
       <SavedNote />
     </div>
   );
@@ -376,7 +376,7 @@ export function SayItTool({ state, update }: Props) {
       </ChipRow>
       {sit && (
         <>
-          <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
+          <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
             <p className="font-semibold">How it might sound</p>
             <p className="mt-1">{sit.example}</p>
             {"freshDraft" in sit && (sit as { freshDraft?: boolean }).freshDraft && (
@@ -443,7 +443,7 @@ export function GridTool({ state, update }: Props) {
         ))}
       </div>
       {rows.length < 5 && (
-        <button type="button" onClick={addPerson} className={`inline-flex items-center gap-1 text-sm ${DARK_GOLD_TEXT} hover:underline`}><Plus className="h-4 w-4" /> Add another person (up to 5)</button>
+        <button type="button" onClick={addPerson} className="inline-flex items-center gap-1 text-sm text-primary hover:underline"><Plus className="h-4 w-4" /> Add another person (up to 5)</button>
       )}
       <div className="overflow-x-auto">
         <table className="w-full min-w-[520px] border-collapse text-sm">
@@ -458,7 +458,7 @@ export function GridTool({ state, update }: Props) {
           </thead>
           <tbody>
             {rows.map((name, i) => (
-              <tr key={i} className={top.some((t) => t.row === i) && name.trim() ? "bg-muted" : ""}>
+              <tr key={i} className={top.some((t) => t.row === i) && name.trim() ? "bg-primary/10" : ""}>
                 <td className="border border-border p-2 font-medium">{name.trim() || `Person ${i + 1}`}</td>
                 {GRID_QUALITIES.map((q) => {
                   const on = !!state.grid[`${i}-${q.key}`];
@@ -477,7 +477,7 @@ export function GridTool({ state, update }: Props) {
         </table>
       </div>
       <p className="text-xs text-muted-foreground">Tap a column name to see what it means. Admiration, common values, trust, fun, work ethic — and attraction still counts.</p>
-      <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
+      <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
         {top.length === 0
           ? "The two with the most checks are the ones to ask out — or at least spend some time with this week."
           : `Top two right now: ${top.map((t) => `${t.name} (${t.score} of 6)`).join(", ")}.`}
@@ -527,7 +527,7 @@ export function PlannerTool({ state, update }: Props) {
         <input value={plan.invite} onChange={(e) => update({ plan: { ...plan, invite: e.target.value } })} placeholder="e.g. Bookstore tomorrow night?" className="mt-2 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
         <p className="mt-1 text-xs text-muted-foreground">Calm, clear, concise. Say what, say when, and ask them to join. You don&rsquo;t have to use the word &ldquo;date&rdquo; if you don&rsquo;t want to.</p>
       </div>
-      <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
+      <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
         Here&rsquo;s your plan: Date 1: {plan.d1 || "—"} · Date 2: {plan.d2 || "—"} · Date 3: {plan.d3 || "—"}
         <br />Invite: {plan.invite || "—"}
       </div>

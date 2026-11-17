@@ -2,18 +2,6 @@ import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { DRIVE_PREVIEW, VIDEOS, lessonById, nextLesson, prevLesson } from "./data";
 
-// Light-panel token override: inside a light gray panel the site's dark-theme
-// tokens are re-pointed at light-theme values, so every existing component
-// (chips, inputs, cards, muted text) reads dark-on-light without hand-editing
-// each class. Gold is deliberately NOT overridden — buttons, badges and
-// progress stay gold.
-export const LIGHT_TOKENS =
-  "[--color-background:oklch(0.98_0_0)] [--color-foreground:oklch(0.18_0_0)] [--color-card:oklch(1_0_0)] [--color-muted:oklch(0.85_0_0)] [--color-muted-foreground:oklch(0.42_0_0)] [--color-border:oklch(0.7_0_0)] [--color-input:oklch(0.62_0_0)] [--color-popover:oklch(1_0_0)] [--color-popover-foreground:oklch(0.18_0_0)]";
-
-// Dark gold for small gold text that sits ON a light panel — the bright site
-// gold is unreadable on light gray, so labels and links use this deep bronze.
-export const DARK_GOLD_TEXT = "text-[oklch(0.42_0.13_85)]";
-
 export function Chip({
   on,
   cut,
@@ -73,13 +61,14 @@ export function ModeBadge({ mode }: { mode: string }) {
   );
 }
 
-// Applying work sits on its own panel — a touch darker neutral gray than the
-// lesson panel, with a gold left edge — so learning and applying are easy
-// to tell apart at a glance. No gold tint in the surface itself.
+// Applying work sits on its own raised panel — a touch lighter neutral dark
+// gray than the lesson panel, with a gold left edge — so learning and
+// applying are easy to tell apart at a glance. No gold tint in the surface
+// itself; the border and fill are strictly neutral.
 export function ApplyBlock({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="mt-8 rounded-xl border border-[oklch(0.62_0_0)] border-l-4 border-l-primary bg-[oklch(0.75_0_0)] p-4 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.7)] first:mt-0 sm:p-5">
-      <p className={`text-xs font-bold uppercase tracking-[0.2em] ${DARK_GOLD_TEXT}`}>{label}</p>
+    <div className="mt-10 rounded-xl border border-[oklch(0.4_0_0)] border-l-4 border-l-primary bg-[oklch(0.23_0_0)] p-4 shadow-[0_10px_28px_-12px_rgba(0,0,0,0.75)] first:mt-0 sm:p-5">
+      <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{label}</p>
       <div className="mt-4">{children}</div>
     </div>
   );
