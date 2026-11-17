@@ -61,7 +61,19 @@ export function ModeBadge({ mode }: { mode: string }) {
   );
 }
 
-export function LessonNav({ lessonId, onDone }: { lessonId: number; onDone?: () => void }) {
+// Applying work sits on its own raised panel — a touch lighter than the
+// lesson panel, with a gold left edge — so learning and applying are easy
+// to tell apart at a glance.
+export function ApplyBlock({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="mt-8 rounded-xl border border-primary/25 border-l-4 border-l-primary bg-[oklch(0.25_0.02_70)] p-4 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.7)] first:mt-0 sm:p-5">
+      <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{label}</p>
+      <div className="mt-4">{children}</div>
+    </div>
+  );
+}
+
+export function LessonNav({ lessonId, onDone, isDone }: { lessonId: number; onDone?: () => void; isDone?: boolean }) {
   const prev = prevLesson(lessonId);
   const next = nextLesson(lessonId);
   return (
@@ -83,10 +95,18 @@ export function LessonNav({ lessonId, onDone }: { lessonId: number; onDone?: () 
         >
           Next: {next.title} <ArrowRight className="h-4 w-4" />
         </Link>
-      ) : (
+      ) : isDone ? (
         <span className="inline-flex items-center gap-2 text-sm text-primary">
           <Check className="h-4 w-4" /> That's the course — now go live it.
         </span>
+      ) : (
+        <button
+          type="button"
+          onClick={onDone}
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+        >
+          <Check className="h-4 w-4" /> Finish the course
+        </button>
       )}
     </div>
   );

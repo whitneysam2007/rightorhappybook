@@ -56,7 +56,7 @@ export const LESSONS: LessonMeta[] = [
   { id: 9, module: 3, title: "Improving My Dating State of Mind", kind: "intro", video: "stateOfMind", mode: "LEARNING", minutes: "4 min" },
   { id: 10, module: 3, title: "Pre-Date", kind: "tool", mode: "APPLYING", minutes: "10 min" },
   { id: 11, module: 3, title: "During the Date", kind: "text", mode: "LEARNING + APPLYING", minutes: "10 min" },
-  { id: 12, module: 3, title: "Free Dating Questions Guide", kind: "tool", mode: "APPLYING", minutes: "10 min" },
+  { id: 12, module: 3, title: "Dating Questions Guide", kind: "tool", mode: "APPLYING", minutes: "10 min" },
   { id: 13, module: 3, title: "Post Date", kind: "tool", mode: "APPLYING", minutes: "10 min" },
   { id: 14, module: 3, title: "Say What You Need to Say", kind: "video", video: "sayIt", mode: "LEARNING + APPLYING", minutes: "10 min" },
   { id: 15, module: 4, title: "Finding Someone to Date", kind: "video", video: "findingSomeone", mode: "LEARNING + APPLYING", minutes: "10 min" },
@@ -255,23 +255,4 @@ export const HOW_WILL_I_KNOW = [
   { label: "Trust", hint: "I feel safe being honest with them" },
   { label: "Fun", hint: "We actually enjoy being together" },
   { label: "Work ethic", hint: "They'll work on this with me" },
-];
-
-// --- Lesson 2: book library ---
-export const BOOK_CHAPTERS = [
-  { ch: "Introduction", lesson: 1 },
-  { ch: "1 — Being Right or Being Happy", lesson: 3 },
-  { ch: "2 — The World of Right", lesson: 3 },
-  { ch: "3 — The “Right” Story", lesson: 4 },
-  { ch: "4 — Superficially Focused", lesson: 6 },
-  { ch: "5 — Alienating Others", lesson: 3 },
-  { ch: "6 — When Things Go to Plan", lesson: 8 },
-  { ch: "7 — Closing the Book on the World of Right", lesson: 8 },
-  { ch: "8 — The World of Happy", lesson: 8 },
-  { ch: "9 — Step 1: Consider Other People", lesson: 10 },
-  { ch: "10 — Step 2: Be Curious", lesson: 11 },
-  { ch: "11 — Step 3: Be Helpful by Being Straightforward", lesson: 14 },
-  { ch: "12 — How Will I Know?", lesson: 19 },
-  { ch: "13 — Final Thoughts", lesson: 19 },
-  { ch: "Appendix — 20 questions + straightforward scripts", lesson: 12 },
 ];

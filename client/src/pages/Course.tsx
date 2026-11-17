@@ -18,7 +18,7 @@ const modules = [
       "Improving My Dating State of Mind",
       "Pre-Date",
       "During the Date",
-      "Free Dating Questions Guide",
+      "Dating Questions Guide",
       "Post Date",
       "Say What You Need to Say",
     ],

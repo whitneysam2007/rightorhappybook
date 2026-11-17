@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Link, useParams } from "wouter";
 import { BookOpen, Check, ChevronRight, Clock, Play } from "lucide-react";
-import { BOOK_CHAPTERS, LESSONS, MODULES, PDFS, lessonById } from "./data";
+import { LESSONS, MODULES, PDFS, lessonById } from "./data";
 import { useCourseState } from "./store";
-import { Chip, ChipRow, LessonNav, ModeBadge, SavedNote, VideoEmbed } from "./ui";
+import { ApplyBlock, Chip, ChipRow, LessonNav, ModeBadge, VideoEmbed } from "./ui";
 import {
   ActionPlan,
   GridTool,
@@ -21,26 +21,33 @@ import {
   WhyHereTool,
 } from "./tools";
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-primary">{children}</p>
-  );
-}
-
 function LearnText({ children }: { children: React.ReactNode }) {
   return <div className="space-y-4 text-[15px] leading-relaxed text-foreground/90">{children}</div>;
 }
 
 // --- small local pickers that don't need to persist ---
 function StoryChips() {
-  const opts = [
+  const baseOpts = [
     "I'll meet them while traveling the world",
     "It'll play out like a movie I love",
     "They'll be exactly the person I pictured",
     "It has to happen by a certain age",
     "I'll just know — and so will everyone else",
+    "They'll have the same background as me",
+    "It has to be love at first sight",
+    "My friends and family will all approve",
+    "I'll meet them at exactly the right time",
   ];
+  const [custom, setCustom] = useState<string[]>([]);
+  const [draft, setDraft] = useState("");
   const [picked, setPicked] = useState<number[]>([]);
+  const opts = [...baseOpts, ...custom];
+  const addOwn = () => {
+    const text = draft.trim();
+    if (!text) return;
+    setCustom([...custom, text]);
+    setDraft("");
+  };
   return (
     <div className="space-y-3">
       <p>Before you watch — which of these sounds like your story?</p>
@@ -51,6 +58,30 @@ function StoryChips() {
           </Chip>
         ))}
       </ChipRow>
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addOwn();
+            }
+          }}
+          placeholder="Add your own…"
+          aria-label="Add your own story"
+          className="min-w-0 flex-1 rounded-full border border-input bg-background px-4 py-2.5 text-sm"
+        />
+        <button
+          type="button"
+          onClick={addOwn}
+          disabled={!draft.trim()}
+          className="shrink-0 rounded-full border border-primary/60 px-4 py-2.5 text-sm font-semibold text-primary disabled:opacity-40"
+        >
+          Add it
+        </button>
+      </div>
       {picked.length > 0 && <p className="text-sm text-muted-foreground">Hold that thought while you watch Jordan and Kylie. Then the tool in the next lesson is where you take your own story apart.</p>}
     </div>
   );
@@ -121,7 +152,7 @@ export default function CoursePlayer() {
                   const l = lessonById(id);
                   const isDone = state.completed.includes(id);
                   return (
-                    <Link key={id} href={`/course/learn/${id}`} className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 hover:border-primary/60">
+                    <Link key={id} href={`/course/learn/${id}`} className="flex items-center gap-3 rounded-lg border border-primary/20 bg-[oklch(0.21_0.015_70)] p-4 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.8)] hover:border-primary/60">
                       <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isDone ? "bg-primary text-primary-foreground" : "bg-primary/15 text-primary"}`}>
                         {isDone ? <Check className="h-4 w-4" /> : <span className="text-xs font-bold">{id}</span>}
                       </span>
@@ -147,8 +178,9 @@ export default function CoursePlayer() {
   // ---------- One lesson ----------
   const mod = MODULES[lesson.module - 1];
   return (
-    <div className="container py-8">
-      <div className="mx-auto max-w-2xl">
+    <div className="container relative py-8">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_65%_60%_at_50%_0%,oklch(0.795_0.155_85/0.15),transparent)]" />
+      <div className="relative mx-auto max-w-2xl">
         <Link href="/course/learn" className="text-sm text-muted-foreground hover:text-foreground">← All lessons</Link>
         <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-primary">
           Module {lesson.module} — {mod.title}
@@ -159,21 +191,11 @@ export default function CoursePlayer() {
           {lesson.minutes && <span className="text-sm text-muted-foreground">{lesson.minutes}</span>}
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 rounded-2xl border border-primary/25 bg-[oklch(0.22_0.02_70)] p-5 shadow-[0_24px_60px_-16px_rgba(0,0,0,0.85)] [&>*:first-child]:mt-0 sm:p-7">
           <LessonBody id={lesson.id} state={state} update={update} toggleIn={toggleIn} />
         </div>
 
-        <div className="mt-6">
-          <button
-            type="button"
-            onClick={() => markComplete(lesson.id)}
-            className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm ${state.completed.includes(lesson.id) ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-primary/60"}`}
-          >
-            <Check className="h-4 w-4" /> {state.completed.includes(lesson.id) ? "Done — marked complete" : "Mark this lesson done"}
-          </button>
-        </div>
-
-        <LessonNav lessonId={lesson.id} onDone={() => markComplete(lesson.id)} />
+        <LessonNav lessonId={lesson.id} onDone={() => markComplete(lesson.id)} isDone={state.completed.includes(lesson.id)} />
       </div>
     </div>
   );
@@ -198,8 +220,9 @@ function LessonBody({ id, state, update, toggleIn }: {
               <p>Even if you&rsquo;ve read the book, there&rsquo;s new ground here.</p>
             </LearnText>
           </div>
-          <SectionLabel>Applying — why are you here?</SectionLabel>
-          <WhyHereTool {...props} />
+          <ApplyBlock label="Applying — why are you here?">
+            <WhyHereTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 2:
@@ -212,14 +235,6 @@ function LessonBody({ id, state, update, toggleIn }: {
             <a href={PDFS.ebook} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
               <BookOpen className="h-4 w-4" /> Read the e-book
             </a>
-          </div>
-          <div className="mt-8 space-y-2">
-            {BOOK_CHAPTERS.map((c) => (
-              <Link key={c.ch} href={`/course/learn/${c.lesson}`} className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3 text-sm hover:border-primary/60">
-                <span>{c.ch}</span>
-                <span className="shrink-0 text-xs text-muted-foreground">Lesson {c.lesson} →</span>
-              </Link>
-            ))}
           </div>
         </>
       );
@@ -236,8 +251,9 @@ function LessonBody({ id, state, update, toggleIn }: {
               <p>The world of happy is different. You&rsquo;re genuinely interested in the other person, for their sake. You see them as a person. It&rsquo;s harder to get into — and it&rsquo;s not a trick. If you use it to manipulate someone, you&rsquo;re still in the world of right.</p>
             </LearnText>
           </div>
-          <SectionLabel>Applying — signs of the world of right</SectionLabel>
-          <SignsTool {...props} />
+          <ApplyBlock label="Applying — signs of the world of right">
+            <SignsTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 4:
@@ -251,15 +267,17 @@ function LessonBody({ id, state, update, toggleIn }: {
               <p>Here&rsquo;s what both of them found: when you question the story, you find a way forward. The obstacle moves.</p>
             </LearnText>
           </div>
-          <SectionLabel>Applying — before the tool</SectionLabel>
-          <StoryChips />
+          <ApplyBlock label="Applying — before the tool">
+            <StoryChips />
+          </ApplyBlock>
         </>
       );
     case 5:
       return (
         <>
-          <SectionLabel>Applying — the story tool</SectionLabel>
-          <StoryTool {...props} />
+          <ApplyBlock label="Applying — the story tool">
+            <StoryTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 6:
@@ -273,18 +291,20 @@ function LessonBody({ id, state, update, toggleIn }: {
               <p>And listen — attraction still matters in the world of happy. The difference isn&rsquo;t hot versus not-hot. It&rsquo;s whether attraction is the most important thing, or one good quality among a balanced mix.</p>
             </LearnText>
           </div>
-          <SectionLabel>Applying — your turn</SectionLabel>
-          <p className="text-[15px] leading-relaxed">Get your lists out — everything. Needs, nopes, pet peeves, the whole thing. Then go through them and ask which ones are really about a great relationship, and which ones are about your story. The next lesson is where you do it.</p>
-          <Link href="/course/learn/7" className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
-            Build my lists <ChevronRight className="h-4 w-4" />
-          </Link>
+          <ApplyBlock label="Applying — your turn">
+            <p className="text-[15px] leading-relaxed">Get your lists out — everything. Needs, nopes, pet peeves, the whole thing. Then go through them and ask which ones are really about a great relationship, and which ones are about your story. The next lesson is where you do it.</p>
+            <Link href="/course/learn/7" className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
+              Build my lists <ChevronRight className="h-4 w-4" />
+            </Link>
+          </ApplyBlock>
         </>
       );
     case 7:
       return (
         <>
-          <SectionLabel>Applying — needs and nope list</SectionLabel>
-          <NeedsNopesTool {...props} />
+          <ApplyBlock label="Applying — needs and nope list">
+            <NeedsNopesTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 8:
@@ -299,8 +319,9 @@ function LessonBody({ id, state, update, toggleIn }: {
               <p>You might not even notice when you get there. The changes show up in your outcomes first.</p>
             </LearnText>
           </div>
-          <SectionLabel>Applying — pause and check</SectionLabel>
-          <PathCheck />
+          <ApplyBlock label="Applying — pause and check">
+            <PathCheck />
+          </ApplyBlock>
         </>
       );
     case 9:
@@ -336,8 +357,9 @@ function LessonBody({ id, state, update, toggleIn }: {
             <p>Before a date, run step one. You are a person, and so are they. You have a lot in common, and a lot to talk about. That opens you up to them — and it quiets the voice in your head, and the insecurities that come with it.</p>
             <p>Then write a mantra. A short statement you say to yourself before the date, to get in the right headspace and set yourself up to connect.</p>
           </LearnText>
-          <SectionLabel>Applying — write your mantra</SectionLabel>
-          <MantraBuilder {...props} />
+          <ApplyBlock label="Applying — write your mantra">
+            <MantraBuilder {...props} />
+          </ApplyBlock>
         </>
       );
     case 11:
@@ -357,8 +379,9 @@ function LessonBody({ id, state, update, toggleIn }: {
             </ul>
             <p>Brenda Ueland said it better than I could: listening is how you get a person to open up.</p>
           </LearnText>
-          <SectionLabel>Applying — what will you work on?</SectionLabel>
-          <ListeningTool {...props} />
+          <ApplyBlock label="Applying — what will you work on?">
+            <ListeningTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 12:
@@ -367,8 +390,9 @@ function LessonBody({ id, state, update, toggleIn }: {
           <LearnText>
             <p>Questions are how curiosity sounds out loud. You can use one or two to get a conversation going — or make a whole date of asking all twenty. The point isn&rsquo;t the questions. It&rsquo;s the listening. That&rsquo;s how you learn who someone is.</p>
           </LearnText>
-          <SectionLabel>Applying — pick 3 questions</SectionLabel>
-          <QuestionDeck {...props} />
+          <ApplyBlock label="Applying — pick 3 questions">
+            <QuestionDeck {...props} />
+          </ApplyBlock>
         </>
       );
     case 13:
@@ -382,8 +406,9 @@ function LessonBody({ id, state, update, toggleIn }: {
               </p>
             )}
           </LearnText>
-          <SectionLabel>Applying — after the date</SectionLabel>
-          <ReflectionTool {...props} />
+          <ApplyBlock label="Applying — after the date">
+            <ReflectionTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 14:
@@ -397,8 +422,9 @@ function LessonBody({ id, state, update, toggleIn }: {
               <p>I once went on a date with someone who talked the whole time and asked me nothing. My roommate told me not to stop being curious, straightforward, and open. &ldquo;You&rsquo;re going to find someone who will respond to that.&rdquo; He was right.</p>
             </LearnText>
           </div>
-          <SectionLabel>Applying — say what you need to say</SectionLabel>
-          <SayItTool {...props} />
+          <ApplyBlock label="Applying — say what you need to say">
+            <SayItTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 15:
@@ -420,8 +446,9 @@ function LessonBody({ id, state, update, toggleIn }: {
               <p>And look for potential, not perfection. Perfection is finished, ready, exactly the way you want it. Potential is the capacity to become something different.</p>
             </LearnText>
           </div>
-          <SectionLabel>Applying — rate real people</SectionLabel>
-          <GridTool {...props} />
+          <ApplyBlock label="Applying — rate real people">
+            <GridTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 16:
@@ -430,8 +457,9 @@ function LessonBody({ id, state, update, toggleIn }: {
           <LearnText>
             <p>This is the same grid from the last lesson — your answers are already here. No need to print anything. It lives right here, and you can come back to it whenever you want.</p>
           </LearnText>
-          <SectionLabel>Applying — the grid</SectionLabel>
-          <GridTool {...props} />
+          <ApplyBlock label="Applying — the grid">
+            <GridTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 17:
@@ -455,8 +483,9 @@ function LessonBody({ id, state, update, toggleIn }: {
           <LearnText>
             <p>Go through each date methodically. Read it, re-read it, and let it sink in. Date one is about getting to know them. Date two goes a little deeper. Date three is where you see if you&rsquo;re a fit.</p>
           </LearnText>
-          <SectionLabel>Applying — plan the dates</SectionLabel>
-          <PlannerTool {...props} />
+          <ApplyBlock label="Applying — plan the dates">
+            <PlannerTool {...props} />
+          </ApplyBlock>
         </>
       );
     case 19:
@@ -470,8 +499,9 @@ function LessonBody({ id, state, update, toggleIn }: {
               <p>So it&rsquo;s a choice. Live in the world of right — blame, resentment, forcing your story into existence. Or live in the world of happy — genuinely interested in other people, dating as a fun adventure of finding out who someone is. Date better, so you can marry better, so you can be happier.</p>
             </LearnText>
           </div>
-          <SectionLabel>Applying — your action plan</SectionLabel>
-          <ActionPlan {...props} />
+          <ApplyBlock label="Applying — your action plan">
+            <ActionPlan {...props} />
+          </ApplyBlock>
         </>
       );
     default:
