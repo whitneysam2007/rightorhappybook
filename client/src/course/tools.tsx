@@ -368,7 +368,7 @@ export function SayItTool({ state, update }: Props) {
   const draft = [msg.fact, msg.feel, msg.need, msg.req].filter(Boolean).join(" ");
   return (
     <div className="space-y-4">
-      <p>Being straightforward sounds scary. I know. But it saves time, and it moves things forward. Pick the one you&rsquo;re facing, look at how it might sound, then write your own version. Say it with &ldquo;I&rdquo;, keep it short, and say it plainly.</p>
+      <p>Being straightforward sounds scary. I know. But it saves time, and it moves things forward. Pick the one you&rsquo;re facing, then write your own version first — and after that, see an example of how it could sound. Say it with &ldquo;I&rdquo;, keep it short, and say it plainly.</p>
       <ChipRow>
         {SAY_IT_SITUATIONS.map((s) => (
           <Chip key={s.key} on={state.messageSit === s.key} onClick={() => update({ messageSit: s.key })}>{s.label}</Chip>
@@ -376,20 +376,13 @@ export function SayItTool({ state, update }: Props) {
       </ChipRow>
       {sit && (
         <>
-          <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
-            <p className="font-semibold">How it might sound</p>
-            <p className="mt-1">{sit.example}</p>
-            {"freshDraft" in sit && (sit as { freshDraft?: boolean }).freshDraft && (
-              <p className="mt-2 text-xs text-muted-foreground">Sam wrote the other examples in his book — this one is a draft, in his words, for him to check.</p>
-            )}
-          </div>
           <div className="space-y-3">
             <div>
-              <label className="text-sm font-semibold">Fact — what actually happened?</label>
-              <input value={msg.fact} onChange={(e) => update({ message: { ...msg, fact: e.target.value } })} placeholder="When you…" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
+              <label className="text-sm font-semibold">Fact — what is true for you?</label>
+              <input value={msg.fact} onChange={(e) => update({ message: { ...msg, fact: e.target.value } })} placeholder="What happened, in plain words…" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
             </div>
             <div>
-              <label className="text-sm font-semibold">Feeling — how did it leave you?</label>
+              <label className="text-sm font-semibold">Feeling — state how you feel</label>
               <input value={msg.feel} onChange={(e) => update({ message: { ...msg, feel: e.target.value } })} placeholder="I felt…" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
             </div>
             <div>
@@ -403,6 +396,13 @@ export function SayItTool({ state, update }: Props) {
           </div>
           <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
             {draft || "Your words will show up here as you write them."}
+          </div>
+          <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
+            <p className="font-semibold">Here&rsquo;s an example of how you could say it.</p>
+            <p className="mt-1">{sit.example}</p>
+            {"freshDraft" in sit && (sit as { freshDraft?: boolean }).freshDraft && (
+              <p className="mt-2 text-xs text-muted-foreground">Sam wrote the other examples in his book — this one is a draft, in his words, for him to check.</p>
+            )}
           </div>
         </>
       )}
@@ -536,64 +536,130 @@ export function PlannerTool({ state, update }: Props) {
   );
 }
 
-// ---------- Lesson 19: action plan ----------
-export function ActionPlan({ state, update, toggleIn }: Props) {
+// ---------- Lesson 19: action plan, in three steps ----------
+// Step 1: the plan itself, emailed to yourself. Step 2: How Will I Know?
+// (book chapter 12) as its own screen — pick one or two things to watch
+// for on your next date. Step 3: the commitment — next step, by when.
+export function ActionPlan({ state, update }: Props) {
   const ess = essentials(state);
   const top = gridTopTwo(state);
   const planText = buildActionPlanText(state);
   const mailto = `mailto:?subject=${encodeURIComponent("My action plan — How to Date Authentically")}&body=${encodeURIComponent(planText)}`;
+  const [step, setStep] = useState(1);
+  const [capNote, setCapNote] = useState(false);
+
+  const toggleKnow = (i: number) => {
+    if (state.know.includes(i)) {
+      update({ know: state.know.filter((x) => x !== i) });
+      setCapNote(false);
+      return;
+    }
+    if (state.know.length >= 2) {
+      setCapNote(true);
+      return;
+    }
+    setCapNote(false);
+    update({ know: [...state.know, i] });
+  };
 
   return (
     <div className="space-y-6">
-      <p>Here&rsquo;s everything you&rsquo;ve done in this course, all in one place. Look it over. Then pick your next step — and put a date on it.</p>
-
-      <div className="space-y-3 rounded-xl border border-border bg-card p-5 text-sm leading-relaxed">
-        <p><span className="font-semibold">What I want to change:</span> {state.story.q14 || "—"}</p>
-        <p><span className="font-semibold">What really matters to me:</span> {ess.needs.join(", ") || "—"}</p>
-        <p><span className="font-semibold">True deal-breakers:</span> {ess.nopes.join(", ") || "—"}</p>
-        <p><span className="font-semibold">My mantra:</span> {state.mantra || "—"}</p>
-        <p><span className="font-semibold">Listening — what I&rsquo;m working on:</span> {state.listenFocus.map((i) => LISTENING_TIPS[i]).join(", ") || "—"}</p>
-        <p><span className="font-semibold">My 3 questions:</span> {state.questions.map((i) => DECK_QUESTIONS[i]).join(" · ") || "—"}</p>
-        <p><span className="font-semibold">The two people to ask out:</span> {top.map((t) => `${t.name} (${t.score} of 6)`).join(", ") || "—"}{state.askWhen ? ` — ${state.askWhen}` : ""}</p>
-        <p><span className="font-semibold">My first three dates{state.planFor ? ` with ${state.planFor}` : ""}:</span> {state.plan.d1 || "—"} · {state.plan.d2 || "—"} · {state.plan.d3 || "—"}</p>
-        <p><span className="font-semibold">How I&rsquo;ll ask:</span> {state.plan.invite || "—"}</p>
-        {(state.message.fact || state.message.feel) && (
-          <p><span className="font-semibold">What I need to say:</span> {[state.message.fact, state.message.feel, state.message.need, state.message.req].filter(Boolean).join(" ")}</p>
-        )}
-        <p><span className="font-semibold">Signs of the World of Right I spotted:</span> {state.signs.length} of 8</p>
+      <div className="flex gap-2 text-xs font-bold uppercase tracking-wider">
+        {[1, 2, 3].map((n) => (
+          <button key={n} type="button" onClick={() => setStep(n)} className={`rounded-full px-3 py-1.5 ${step === n ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+            Step {n}
+          </button>
+        ))}
       </div>
 
-      <div className="space-y-3">
-        <h3 className="font-semibold">How will I know? — from chapter 12 of the book</h3>
-        <p className="text-sm text-muted-foreground">A great relationship has some combination of these five things. Tap the ones you can already see.</p>
-        <ChipRow>
-          {HOW_WILL_I_KNOW.map((h, i) => (
-            <Chip key={h.label} multi on={state.know.includes(i)} onClick={() => toggleIn("know", i)}>
-              {h.label} — {h.hint}
-            </Chip>
-          ))}
-        </ChipRow>
-        <p className="text-sm text-muted-foreground">
-          {state.know.length === 0 ? "Tap the ones you can see already." : `${state.know.length} out of 5. There's no need to make lists — just pay attention to the things that matter most.`}
-        </p>
-      </div>
+      {step === 1 && (
+        <div className="space-y-6">
+          <p>Here&rsquo;s everything you&rsquo;ve done in this course, all in one place. Look it over. Then pick your next step — and put a date on it.</p>
 
-      <div className="space-y-3">
-        <p className="font-semibold">One choice: I&rsquo;m dating in the world of happy from here on.</p>
-        <div>
-          <label htmlFor="next-step" className="text-sm font-semibold">My next step</label>
-          <input id="next-step" value={state.nextStep} onChange={(e) => update({ nextStep: e.target.value })} placeholder="e.g. Ask Alex out" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
+          <div className="space-y-3 rounded-xl border border-border bg-card p-5 text-sm leading-relaxed">
+            <p><span className="font-semibold">What I want to change:</span> {state.story.q14 || "—"}</p>
+            <p><span className="font-semibold">What really matters to me:</span> {ess.needs.join(", ") || "—"}</p>
+            <p><span className="font-semibold">True deal-breakers:</span> {ess.nopes.join(", ") || "—"}</p>
+            <p><span className="font-semibold">My mantra:</span> {state.mantra || "—"}</p>
+            <p><span className="font-semibold">Listening — what I&rsquo;m working on:</span> {state.listenFocus.map((i) => LISTENING_TIPS[i]).join(", ") || "—"}</p>
+            <p><span className="font-semibold">My 3 questions:</span> {state.questions.map((i) => DECK_QUESTIONS[i]).join(" · ") || "—"}</p>
+            <p><span className="font-semibold">The two people to ask out:</span> {top.map((t) => `${t.name} (${t.score} of 6)`).join(", ") || "—"}{state.askWhen ? ` — ${state.askWhen}` : ""}</p>
+            <p><span className="font-semibold">My first three dates{state.planFor ? ` with ${state.planFor}` : ""}:</span> {state.plan.d1 || "—"} · {state.plan.d2 || "—"} · {state.plan.d3 || "—"}</p>
+            <p><span className="font-semibold">How I&rsquo;ll ask:</span> {state.plan.invite || "—"}</p>
+            {(state.message.fact || state.message.feel) && (
+              <p><span className="font-semibold">What I need to say:</span> {[state.message.fact, state.message.feel, state.message.need, state.message.req].filter(Boolean).join(" ")}</p>
+            )}
+            <p><span className="font-semibold">Signs of the World of Right I spotted:</span> {state.signs.length} of 8</p>
+          </div>
+
+          <div>
+            <a href={mailto} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+              <Mail className="h-4 w-4" /> Email me my action plan
+            </a>
+            <p className="mt-2 text-xs text-muted-foreground">This opens an email with your plan already written in it — you send it to yourself. A one-tap send inside the course comes later.</p>
+          </div>
+
+          <button type="button" onClick={() => setStep(2)} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
+            Next — how will I know?
+          </button>
         </div>
-        <div>
-          <label htmlFor="next-date" className="text-sm font-semibold">By when?</label>
-          <input id="next-date" type="date" value={state.nextDate} onChange={(e) => update({ nextDate: e.target.value })} className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
-        </div>
-      </div>
+      )}
 
-      <a href={mailto} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
-        <Mail className="h-4 w-4" /> Email me my action plan
-      </a>
-      <p className="text-xs text-muted-foreground">This opens an email with your plan already written in it — you send it to yourself. A one-tap send inside the course comes later.</p>
+      {step === 2 && (
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">How will I know?</h3>
+          <p className="text-[15px] leading-relaxed">
+            Here&rsquo;s the question everyone asks: how do I know I&rsquo;ve found the one? In the world of right, the answer is when the story makes sense — when the boxes are checked. In the world of happy, it&rsquo;s simpler. You know it when you find a great relationship. And a great relationship has some combination of five things: people who admire each other, share what matters most, trust each other, have fun together, and are willing to work on it together.
+          </p>
+          <p className="text-[15px] leading-relaxed">
+            That&rsquo;s chapter 12 of the book. There&rsquo;s no need to make lists. Just pay attention to the things that matter most.
+          </p>
+          <p className="text-[15px] leading-relaxed font-medium">
+            Now pick one or two to focus on most on your next date — the ones that will tell you if this person is worth asking out again.
+          </p>
+          <ChipRow>
+            {HOW_WILL_I_KNOW.map((h, i) => (
+              <Chip key={h.label} multi on={state.know.includes(i)} onClick={() => toggleKnow(i)}>
+                {h.label} — {h.hint}
+              </Chip>
+            ))}
+          </ChipRow>
+          <p className="text-sm text-muted-foreground">
+            {state.know.length === 0
+              ? "Tap one or two to watch for."
+              : `You're watching for: ${state.know.map((i) => HOW_WILL_I_KNOW[i].label).join(", ")} — that's what will tell you if they're worth asking out again.`}
+          </p>
+          {capNote && <p className="text-sm text-primary">One or two is enough to watch for — that&rsquo;s the point.</p>}
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={() => setStep(1)} className="rounded-full border border-border px-5 py-2.5 text-sm">Back</button>
+            <button type="button" onClick={() => setStep(3)} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">Next — commit to it</button>
+          </div>
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="space-y-4">
+          <p className="font-semibold">One choice: I&rsquo;m dating in the world of happy from here on.</p>
+          {state.know.length > 0 && (
+            <p className="text-sm text-muted-foreground">
+              And on your next date, you&rsquo;re watching for: {state.know.map((i) => HOW_WILL_I_KNOW[i].label).join(", ")}.
+            </p>
+          )}
+          <div>
+            <label htmlFor="next-step" className="text-sm font-semibold">My next step</label>
+            <input id="next-step" value={state.nextStep} onChange={(e) => update({ nextStep: e.target.value })} placeholder="e.g. Ask Alex out" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
+          </div>
+          <div>
+            <label htmlFor="next-date" className="text-sm font-semibold">By when?</label>
+            <input id="next-date" type="date" value={state.nextDate} onChange={(e) => update({ nextDate: e.target.value })} className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
+          </div>
+          <p className="text-sm text-muted-foreground">That&rsquo;s the plan. Now go live it.</p>
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={() => setStep(2)} className="rounded-full border border-border px-5 py-2.5 text-sm">Back</button>
+          </div>
+        </div>
+      )}
+
       <SavedNote />
     </div>
   );

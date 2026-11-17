@@ -6,16 +6,16 @@ export const DRIVE_PREVIEW = (id: string) =>
   `https://drive.google.com/file/d/${id}/preview`;
 
 export const VIDEOS: Record<string, { id: string; minutes: string }> = {
-  welcome: { id: "1pLWbGc9Y6iPiPIgMtC1csl1g15vW1k47", minutes: "3:02" },
-  rightOrHappy: { id: "1EkOLBOHpwdFrME4HVZNSAAX3vqbWhCud", minutes: "9:34" },
-  story: { id: "1U1zsis4SeO_4GJyJLbO4nlnzhcWHNwCn", minutes: "6:31" },
-  needsNopes: { id: "1qGOlQVfKeiiatAUTewOj6CNTBkuGyZyB", minutes: "3:28" },
-  worldOfHappy: { id: "1GttGvdfJJ67OMMvL9o2ndA83f3c9rcho", minutes: "3:19" },
-  stateOfMind: { id: "1u9dGcVPk8FR7ME1XTi99tEARDmUf4l0k", minutes: "3:09" },
-  sayIt: { id: "104EuzD3D7H7qFm0wKaqiJV31eytIENNy", minutes: "2:50" },
-  findingSomeone: { id: "1oYSjb7rC_qsPmDH7woR-fXHPujTQaxPe", minutes: "4:40" },
-  threeDates: { id: "1w_9hgnEnfpzrfj5qmjAChUB435u6lBEv", minutes: "1:58" },
-  wrapUp: { id: "1_A9Dngc5JOHh8GBUoMDgaxz0qCdhvAjj", minutes: "3:06" },
+  welcome: { id: "1pLWbGc9Y6iPiPIgMtC1csl1g15vW1k47" },
+  rightOrHappy: { id: "1EkOLBOHpwdFrME4HVZNSAAX3vqbWhCud" },
+  story: { id: "1U1zsis4SeO_4GJyJLbO4nlnzhcWHNwCn" },
+  needsNopes: { id: "1qGOlQVfKeiiatAUTewOj6CNTBkuGyZyB" },
+  worldOfHappy: { id: "1GttGvdfJJ67OMMvL9o2ndA83f3c9rcho" },
+  stateOfMind: { id: "1u9dGcVPk8FR7ME1XTi99tEARDmUf4l0k" },
+  sayIt: { id: "104EuzD3D7H7qFm0wKaqiJV31eytIENNy" },
+  findingSomeone: { id: "1oYSjb7rC_qsPmDH7woR-fXHPujTQaxPe" },
+  threeDates: { id: "1w_9hgnEnfpzrfj5qmjAChUB435u6lBEv" },
+  wrapUp: { id: "1_A9Dngc5JOHh8GBUoMDgaxz0qCdhvAjj" },
 };
 
 // The tools live in the course now — no downloads. Only the e-book
@@ -41,29 +41,28 @@ export type LessonMeta = {
   kind: "video" | "tool" | "text" | "library" | "intro" | "plan";
   video?: keyof typeof VIDEOS;
   mode: string; // "LEARNING" | "APPLYING" | "LEARNING + APPLYING"
-  minutes?: string;
 };
 
 export const LESSONS: LessonMeta[] = [
-  { id: 1, module: 1, title: "Welcome", kind: "video", video: "welcome", mode: "LEARNING", minutes: "3 min" },
+  { id: 1, module: 1, title: "Welcome", kind: "video", video: "welcome", mode: "LEARNING" },
   { id: 2, module: 1, title: "Read the E-Book", kind: "library", mode: "LEARNING" },
-  { id: 3, module: 1, title: "Right or Happy?", kind: "video", video: "rightOrHappy", mode: "LEARNING + APPLYING", minutes: "10 min" },
-  { id: 4, module: 2, title: "Dissecting My Story", kind: "video", video: "story", mode: "LEARNING", minutes: "7 min" },
-  { id: 5, module: 2, title: "Dissecting My Story Tool", kind: "tool", mode: "APPLYING", minutes: "30 min" },
-  { id: 6, module: 2, title: "Discovering What Really Matters", kind: "video", video: "needsNopes", mode: "LEARNING", minutes: "4 min" },
-  { id: 7, module: 2, title: "Needs and Nope List", kind: "tool", mode: "APPLYING", minutes: "15 min" },
-  { id: 8, module: 3, title: "The World of Happy", kind: "video", video: "worldOfHappy", mode: "LEARNING", minutes: "4 min" },
-  { id: 9, module: 3, title: "Improving My Dating State of Mind", kind: "intro", video: "stateOfMind", mode: "LEARNING", minutes: "4 min" },
-  { id: 10, module: 3, title: "Pre-Date", kind: "tool", mode: "APPLYING", minutes: "10 min" },
-  { id: 11, module: 3, title: "During the Date", kind: "text", mode: "LEARNING + APPLYING", minutes: "10 min" },
-  { id: 12, module: 3, title: "Dating Questions Guide", kind: "tool", mode: "APPLYING", minutes: "10 min" },
-  { id: 13, module: 3, title: "Post Date", kind: "tool", mode: "APPLYING", minutes: "10 min" },
-  { id: 14, module: 3, title: "Say What You Need to Say", kind: "video", video: "sayIt", mode: "LEARNING + APPLYING", minutes: "10 min" },
-  { id: 15, module: 4, title: "Finding Someone to Date", kind: "video", video: "findingSomeone", mode: "LEARNING + APPLYING", minutes: "10 min" },
-  { id: 16, module: 4, title: "Finding Someone to Date Tool", kind: "tool", mode: "APPLYING", minutes: "5 min" },
-  { id: 17, module: 4, title: "The First 3 Dates", kind: "intro", video: "threeDates", mode: "LEARNING", minutes: "3 min" },
-  { id: 18, module: 4, title: "The First 3 Dates Tool", kind: "tool", mode: "APPLYING", minutes: "15 min" },
-  { id: 19, module: 5, title: "Conclusion — Your Action Plan", kind: "plan", video: "wrapUp", mode: "LEARNING + APPLYING", minutes: "10 min" },
+  { id: 3, module: 1, title: "Right or Happy?", kind: "video", video: "rightOrHappy", mode: "LEARNING + APPLYING" },
+  { id: 4, module: 2, title: "Dissecting My Story", kind: "video", video: "story", mode: "LEARNING" },
+  { id: 5, module: 2, title: "Dissecting My Story Tool", kind: "tool", mode: "APPLYING" },
+  { id: 6, module: 2, title: "Discovering What Really Matters", kind: "video", video: "needsNopes", mode: "LEARNING" },
+  { id: 7, module: 2, title: "Needs and Nope List", kind: "tool", mode: "APPLYING" },
+  { id: 8, module: 3, title: "The World of Happy", kind: "video", video: "worldOfHappy", mode: "LEARNING" },
+  { id: 9, module: 3, title: "Improving My Dating State of Mind", kind: "intro", video: "stateOfMind", mode: "LEARNING" },
+  { id: 10, module: 3, title: "Pre-Date", kind: "tool", mode: "APPLYING" },
+  { id: 11, module: 3, title: "During the Date", kind: "text", mode: "LEARNING + APPLYING" },
+  { id: 12, module: 3, title: "Dating Questions Guide", kind: "tool", mode: "APPLYING" },
+  { id: 13, module: 3, title: "Post Date", kind: "tool", mode: "APPLYING" },
+  { id: 14, module: 3, title: "Say What You Need to Say", kind: "video", video: "sayIt", mode: "LEARNING + APPLYING" },
+  { id: 15, module: 4, title: "Finding Someone to Date", kind: "video", video: "findingSomeone", mode: "LEARNING + APPLYING" },
+  { id: 16, module: 4, title: "Finding Someone to Date Tool", kind: "tool", mode: "APPLYING" },
+  { id: 17, module: 4, title: "The First 3 Dates", kind: "intro", video: "threeDates", mode: "LEARNING" },
+  { id: 18, module: 4, title: "The First 3 Dates Tool", kind: "tool", mode: "APPLYING" },
+  { id: 19, module: 5, title: "Conclusion — Your Action Plan", kind: "plan", video: "wrapUp", mode: "LEARNING + APPLYING" },
 ];
 
 export const lessonById = (id: number) => LESSONS.find((l) => l.id === id)!;
@@ -189,8 +188,9 @@ export const REFLECTION_PROMPTS = [
 ];
 
 // --- Lesson 14: situations + examples ---
-// "like" and "down" examples follow Sam's appendix scripts. The "tell"
-// example is a fresh draft in Sam's formula — not yet approved by Sam.
+// "like" and "down" examples follow Sam's appendix scripts. The "tell",
+// "break", "hurt" and "space" examples are fresh drafts in Sam's formula —
+// not yet approved by Sam.
 export const SAY_IT_SITUATIONS = [
   {
     key: "like",
@@ -210,6 +210,27 @@ export const SAY_IT_SITUATIONS = [
     label: "I need to let someone down",
     example:
       "Thank you — I'm flattered that you like me. I don't feel the same way, and I'm sorry if that hurts. I want to be honest so we can both move forward.",
+  },
+  {
+    key: "break",
+    label: "I need to break up with someone",
+    example:
+      "I need to be honest with you, because you deserve that. I care about you, and I've enjoyed our time together — but I don't feel about you the way you deserve, and I can't see a future for us. I'm sorry this hurts. I wanted to tell you straight, instead of letting it drag on.",
+    freshDraft: true,
+  },
+  {
+    key: "hurt",
+    label: "I need to tell someone they hurt me",
+    example:
+      "When you said that in front of everyone, I felt embarrassed, and I went quiet for the rest of the night. I need to know I can tell you when something stings. Would you be willing to hear me out?",
+    freshDraft: true,
+  },
+  {
+    key: "space",
+    label: "I need to ask for some space",
+    example:
+      "I like where this is going, and I need a little room to breathe right now. I need a few days to sort out what I'm feeling. Would it be okay if I take some time, and then we talk?",
+    freshDraft: true,
   },
 ];
 

@@ -1,6 +1,6 @@
 // Course player: lesson list + one lesson at a time, one idea per screen.
 // LEARNING and APPLYING are labelled on every lesson. Answers save on-device.
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "wouter";
 import { BookOpen, Check, ChevronRight, Clock, Play } from "lucide-react";
 import { LESSONS, MODULES, PDFS, lessonById } from "./data";
@@ -116,6 +116,8 @@ export default function CoursePlayer() {
   const { state, update, toggleIn, markComplete } = useCourseState();
   const lessonId = params.lessonId ? parseInt(params.lessonId, 10) : null;
   const lesson = lessonId ? LESSONS.find((l) => l.id === lessonId) : null;
+  const [finished, setFinished] = useState(false);
+  useEffect(() => setFinished(false), [lessonId]);
 
   // ---------- Lesson list ----------
   if (!lesson) {
@@ -158,7 +160,7 @@ export default function CoursePlayer() {
                       </span>
                       <span className="flex-1">
                         <span className="block font-medium">{l.title}</span>
-                        <span className="text-xs text-muted-foreground">{l.mode}{l.minutes ? ` · ${l.minutes}` : ""}</span>
+                        <span className="text-xs text-muted-foreground">{l.mode}</span>
                       </span>
                       <ChevronRight className="h-4 w-4 text-muted-foreground" />
                     </Link>
@@ -170,6 +172,17 @@ export default function CoursePlayer() {
           <p className="text-xs text-muted-foreground">
             Preview build: no payment or enrollment step yet — that comes after Sam reviews this. Your answers save on this device only.
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ---------- Finish screen (after "Finish the course" on Lesson 19) ----------
+  if (finished && lesson?.id === 19) {
+    return (
+      <div className="container py-8">
+        <div className="relative mx-auto max-w-2xl">
+          <FinishScreen />
         </div>
       </div>
     );
@@ -187,7 +200,6 @@ export default function CoursePlayer() {
         <h1 className="mt-1 font-serif text-3xl font-bold leading-tight md:text-4xl">{lesson.title}</h1>
         <div className="mt-3 flex items-center gap-3">
           <ModeBadge mode={lesson.mode} />
-          {lesson.minutes && <span className="text-sm text-muted-foreground">{lesson.minutes}</span>}
         </div>
         {/* Gold's one thin accent on the lesson itself: a hairline rule under the header. */}
         <div aria-hidden className="mt-5 h-px w-full bg-primary/50" />
@@ -196,7 +208,107 @@ export default function CoursePlayer() {
           <LessonBody id={lesson.id} state={state} update={update} toggleIn={toggleIn} />
         </div>
 
-        <LessonNav lessonId={lesson.id} onDone={() => markComplete(lesson.id)} isDone={state.completed.includes(lesson.id)} />
+        <LessonNav
+          lessonId={lesson.id}
+          onDone={() => {
+            markComplete(lesson.id);
+            if (lesson.id === 19) setFinished(true);
+          }}
+          isDone={state.completed.includes(lesson.id)}
+        />
+      </div>
+    </div>
+  );
+}
+
+// --- Confetti: dependency-free falling gold pieces for the finish screen ---
+function Confetti() {
+  const pieces = Array.from({ length: 48 }, (_, i) => ({
+    left: (i * 37 + 11) % 100,
+    delay: ((i * 7) % 30) / 10,
+    duration: 3 + ((i * 13) % 20) / 10,
+    size: 6 + ((i * 5) % 8),
+    gold: i % 4 !== 3,
+    rot: (i * 47) % 360,
+  }));
+  return (
+    <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden">
+      <style>{`@keyframes confetti-fall { 0% { transform: translateY(-4vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(108vh) rotate(720deg); opacity: 0.6; } }`}</style>
+      {pieces.map((p, i) => (
+        <span
+          key={i}
+          style={{
+            position: "absolute",
+            left: `${p.left}%`,
+            top: "-4%",
+            width: p.size,
+            height: p.size * 0.6,
+            background: p.gold ? "#e6bc4b" : "#d4d4d4",
+            borderRadius: 1,
+            animation: `confetti-fall ${p.duration}s linear ${p.delay}s infinite`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// --- Finish screen: shown after "Finish the course" on Lesson 19 ---
+function FinishScreen() {
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "manual">("idle");
+  const courseUrl = "https://rightorhappybook.com/course";
+  const copyLink = async () => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(courseUrl);
+        setCopyState("copied");
+        return;
+      }
+      throw new Error("no clipboard");
+    } catch {
+      setCopyState("manual");
+    }
+  };
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-[oklch(0.4_0_0)] bg-[oklch(0.2_0_0)] p-6 text-center shadow-[0_28px_70px_-18px_rgba(0,0,0,0.9)] sm:p-10">
+      <Confetti />
+      <div className="relative">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">You finished the course</p>
+        <p className="mt-5 font-serif text-2xl font-bold leading-snug md:text-3xl">
+          Congratulations, you&rsquo;ve now taken the first steps on your new dating journey. I wish you all the best, and I know that as long as you strive to live to be happy, great opportunities await you.
+        </p>
+        <p className="mt-3 text-sm text-muted-foreground">— Sam</p>
+        <div className="mx-auto mt-10 max-w-sm space-y-3">
+          <p className="text-sm font-semibold">Know someone who needs this?</p>
+          <button
+            type="button"
+            onClick={copyLink}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+          >
+            {copyState === "copied" ? (
+              <>
+                <Check className="h-4 w-4" /> Copied!
+              </>
+            ) : (
+              "Copy course link"
+            )}
+          </button>
+          {copyState === "manual" && (
+            <p className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm break-all">{courseUrl}</p>
+          )}
+          <a
+            href="https://amzn.to/4flIlj8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-semibold hover:border-primary/60"
+          >
+            Share the book
+          </a>
+          <p className="text-xs text-muted-foreground">Send them the book on Amazon.</p>
+        </div>
+        <Link href="/course/learn" className="mt-10 inline-block text-sm text-muted-foreground hover:text-foreground">
+          ← Back to all lessons
+        </Link>
       </div>
     </div>
   );
@@ -400,12 +512,8 @@ function LessonBody({ id, state, update, toggleIn }: {
       return (
         <>
           <LearnText>
+            <p>Think back to your last date. What do you remember? Take a few minutes with it now — that&rsquo;s the practice. The more you do it here, the more natural it feels after your next date.</p>
             <p>After each date, take a few minutes and think it through. What did you like? What didn&rsquo;t you like? What do you remember about them? How do you feel — and do you want to go out again? Decide on what actually happened, not on your story.</p>
-            {state.mantra && (
-              <p className="rounded-lg border border-border bg-card p-4 text-sm">
-                Your mantra, for next time: <em>{state.mantra}</em>
-              </p>
-            )}
           </LearnText>
           <ApplyBlock label="Applying — after the date">
             <ReflectionTool {...props} />
