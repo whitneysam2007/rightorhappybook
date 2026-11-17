@@ -2,7 +2,7 @@
 // LEARNING and APPLYING are labelled on every lesson. Answers save on-device.
 import { useState } from "react";
 import { Link, useParams } from "wouter";
-import { BookOpen, Check, ChevronRight, Clock, Download, Play } from "lucide-react";
+import { BookOpen, Check, ChevronRight, Clock, Play } from "lucide-react";
 import { BOOK_CHAPTERS, LESSONS, MODULES, PDFS, lessonById } from "./data";
 import { useCourseState } from "./store";
 import { Chip, ChipRow, LessonNav, ModeBadge, SavedNote, VideoEmbed } from "./ui";
@@ -211,9 +211,6 @@ function LessonBody({ id, state, update, toggleIn }: {
           <div className="mt-6 flex flex-wrap gap-3">
             <a href={PDFS.ebook} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
               <BookOpen className="h-4 w-4" /> Read the e-book
-            </a>
-            <a href={PDFS.ebook} download className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm">
-              <Download className="h-4 w-4" /> Download it
             </a>
           </div>
           <div className="mt-8 space-y-2">
@@ -431,10 +428,10 @@ function LessonBody({ id, state, update, toggleIn }: {
       return (
         <>
           <LearnText>
-            <p>This is the same grid from the last lesson — your answers are already here. The PDF below is the paper version, if you want it on your desk.</p>
+            <p>This is the same grid from the last lesson — your answers are already here. No need to print anything. It lives right here, and you can come back to it whenever you want.</p>
           </LearnText>
           <SectionLabel>Applying — the grid</SectionLabel>
-          <GridTool {...props} showPdf />
+          <GridTool {...props} />
         </>
       );
     case 17:

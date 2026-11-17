@@ -18,11 +18,9 @@ export const VIDEOS: Record<string, { id: string; minutes: string }> = {
   wrapUp: { id: "1_A9Dngc5JOHh8GBUoMDgaxz0qCdhvAjj", minutes: "3:06" },
 };
 
+// The tools live in the course now — no downloads. Only the e-book
+// still has a file, so learners can read it right here.
 export const PDFS = {
-  storyTool: "/course/tools/dissecting-my-story-tool.pdf",
-  needsNopes: "/course/tools/needs-and-nope-list.pdf",
-  questionsGuide: "/course/tools/dating-questions-guide.pdf",
-  findingSomeone: "/course/tools/finding-someone-to-date-tool.pdf",
   ebook: "/course/how-to-date-authentically-ebook.pdf",
 };
 

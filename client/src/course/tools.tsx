@@ -2,7 +2,7 @@
 // and direct. No system talk, no slogans.
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
-import { ArrowRight, Download, Mail, Plus } from "lucide-react";
+import { ArrowRight, Mail, Plus } from "lucide-react";
 import {
   DATE_PLANS,
   DECK_QUESTIONS,
@@ -12,7 +12,6 @@ import {
   LISTEN_SELF_CHECK,
   NEEDS_POOL,
   NOPES_POOL,
-  PDFS,
   REFLECTION_PROMPTS,
   SAM_MANTRA,
   SAY_IT_SITUATIONS,
@@ -145,9 +144,6 @@ export function StoryTool({ state, update }: Props) {
         )}
       </div>
       <p className="text-xs text-muted-foreground">Section {sectionIdx + 1} of 3 · {STORY_TOOL.map((s) => s.label).join(" → ")}</p>
-      <a href={PDFS.storyTool} download className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
-        <Download className="h-4 w-4" /> Download the Story Tool as a PDF
-      </a>
       <SavedNote />
     </div>
   );
@@ -240,9 +236,6 @@ export function NeedsNopesTool({ state, update }: Props) {
           </div>
         </div>
       )}
-      <a href={PDFS.needsNopes} download className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
-        <Download className="h-4 w-4" /> Download the Needs and Nope List as a PDF
-      </a>
       <SavedNote />
     </div>
   );
@@ -311,9 +304,6 @@ export function QuestionDeck({ state, toggleIn }: Props) {
       <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
         And here are your 3 questions: {state.questions.map((i) => DECK_QUESTIONS[i]).join(" · ") || "—"}
       </div>
-      <a href={PDFS.questionsGuide} download className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
-        <Download className="h-4 w-4" /> Download all 20 questions as a PDF
-      </a>
       <SavedNote />
     </div>
   );
@@ -423,7 +413,7 @@ export function SayItTool({ state, update }: Props) {
 }
 
 // ---------- Lessons 15 + 16: the grid ----------
-export function GridTool({ state, update, showPdf }: Props & { showPdf?: boolean }) {
+export function GridTool({ state, update }: Props) {
   const ess = essentials(state);
   const rows = state.gridNames;
   const setName = (i: number, v: string) => {
@@ -497,11 +487,6 @@ export function GridTool({ state, update, showPdf }: Props & { showPdf?: boolean
         <label htmlFor="ask-when" className="text-sm font-semibold">I&rsquo;ll ask them out…</label>
         <input id="ask-when" value={state.askWhen} onChange={(e) => update({ askWhen: e.target.value })} placeholder="e.g. This Thursday" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
       </div>
-      {showPdf && (
-        <a href={PDFS.findingSomeone} download className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
-          <Download className="h-4 w-4" /> Download the grid as a PDF
-        </a>
-      )}
       <SavedNote />
     </div>
   );
