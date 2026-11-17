@@ -5,11 +5,13 @@ import { DRIVE_PREVIEW, VIDEOS, lessonById, nextLesson, prevLesson } from "./dat
 export function Chip({
   on,
   cut,
+  multi,
   onClick,
   children,
 }: {
   on?: boolean;
   cut?: boolean;
+  multi?: boolean;
   onClick: () => void;
   children: React.ReactNode;
 }) {
@@ -18,19 +20,26 @@ export function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={!!on}
-      className={`rounded-full border px-4 py-2.5 text-left text-sm leading-snug transition-colors ${
+      className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left text-[15px] leading-snug transition-colors ${
         on
-          ? "border-primary bg-primary font-semibold text-primary-foreground"
+          ? "border-primary bg-primary/15 text-foreground"
           : "border-border bg-card text-foreground hover:border-primary/60"
       } ${cut ? "opacity-45 line-through" : ""}`}
     >
-      {children}
+      <span
+        className={`flex h-5 w-5 shrink-0 items-center justify-center border-2 ${
+          multi ? "rounded-md" : "rounded-full"
+        } ${on ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/60"}`}
+      >
+        {on && <Check className="h-3.5 w-3.5" />}
+      </span>
+      <span className="flex-1">{children}</span>
     </button>
   );
 }
 
 export function ChipRow({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-wrap gap-2">{children}</div>;
+  return <div className="flex flex-col gap-2">{children}</div>;
 }
 
 export function VideoEmbed({ videoKey, title }: { videoKey: keyof typeof VIDEOS; title: string }) {

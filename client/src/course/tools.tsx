@@ -35,7 +35,7 @@ export function WhyHereTool({ state, update }: Props) {
       <p>Before we start — why are you here? Tap the ones that sound like you.</p>
       <ChipRow>
         {WHY_HERE.map((w, i) => (
-          <Chip key={w} on={state.whyHere.includes(w)} onClick={() => update({ whyHere: state.whyHere.includes(w) ? state.whyHere.filter((x) => x !== w) : [...state.whyHere, w] })}>
+          <Chip key={w} multi on={state.whyHere.includes(w)} onClick={() => update({ whyHere: state.whyHere.includes(w) ? state.whyHere.filter((x) => x !== w) : [...state.whyHere, w] })}>
             {w}
           </Chip>
         ))}
@@ -59,7 +59,7 @@ export function SignsTool({ state, toggleIn }: Props) {
       <p className="text-lg font-medium">When you date in the world of right, what do you catch yourself doing? Tap the ones you recognize.</p>
       <ChipRow>
         {SIGNS_OF_RIGHT.map((s, i) => (
-          <Chip key={s} on={state.signs.includes(i)} onClick={() => toggleIn("signs", i)}>
+          <Chip key={s} multi on={state.signs.includes(i)} onClick={() => toggleIn("signs", i)}>
             {s}
           </Chip>
         ))}
@@ -179,7 +179,7 @@ export function NeedsNopesTool({ state, update }: Props) {
           <p className="text-sm font-semibold">My needs</p>
           <ChipRow>
             {NEEDS_POOL.map((n) => (
-              <Chip key={n} on={state.needs.includes(n)} onClick={() => togglePick("needs", n)}>{n}</Chip>
+              <Chip key={n} multi on={state.needs.includes(n)} onClick={() => togglePick("needs", n)}>{n}</Chip>
             ))}
           </ChipRow>
           <div className="flex gap-2">
@@ -189,7 +189,7 @@ export function NeedsNopesTool({ state, update }: Props) {
           <p className="text-sm font-semibold">My nopes</p>
           <ChipRow>
             {NOPES_POOL.map((n) => (
-              <Chip key={n} on={state.nopes.includes(n)} onClick={() => togglePick("nopes", n)}>{n}</Chip>
+              <Chip key={n} multi on={state.nopes.includes(n)} onClick={() => togglePick("nopes", n)}>{n}</Chip>
             ))}
           </ChipRow>
           <div className="flex gap-2">
@@ -207,7 +207,7 @@ export function NeedsNopesTool({ state, update }: Props) {
           <p>Now look at each one and ask: is this about a great relationship, or is it about my story? Tap the ones that aren&rsquo;t really essential, and let them go.</p>
           <ChipRow>
             {allPicked.map((x) => (
-              <Chip key={x.k} cut={state.eliminated.includes(x.k)} onClick={() => update({ eliminated: state.eliminated.includes(x.k) ? state.eliminated.filter((e) => e !== x.k) : [...state.eliminated, x.k] })}>
+              <Chip key={x.k} multi cut={state.eliminated.includes(x.k)} onClick={() => update({ eliminated: state.eliminated.includes(x.k) ? state.eliminated.filter((e) => e !== x.k) : [...state.eliminated, x.k] })}>
                 {x.t}{state.eliminated.includes(x.k) ? " — let go" : ""}
               </Chip>
             ))}
@@ -277,7 +277,7 @@ export function ListeningTool({ state, update, toggleIn }: Props) {
       <p>Now pick the 2 things you most need to work on:</p>
       <ChipRow>
         {LISTENING_TIPS.map((t, i) => (
-          <Chip key={t} on={state.listenFocus.includes(i)} onClick={() => toggleIn("listenFocus", i, 2)}>{t}</Chip>
+          <Chip key={t} multi on={state.listenFocus.includes(i)} onClick={() => toggleIn("listenFocus", i, 2)}>{t}</Chip>
         ))}
       </ChipRow>
       <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
@@ -298,7 +298,7 @@ export function QuestionDeck({ state, toggleIn }: Props) {
       <p>Here are 10 questions from the guide to choose from. Pick 3 for your next date.</p>
       <ChipRow>
         {DECK_QUESTIONS.map((q, i) => (
-          <Chip key={q} on={state.questions.includes(i)} onClick={() => toggleIn("questions", i, 3)}>{q}</Chip>
+          <Chip key={q} multi on={state.questions.includes(i)} onClick={() => toggleIn("questions", i, 3)}>{q}</Chip>
         ))}
       </ChipRow>
       <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
@@ -568,7 +568,7 @@ export function ActionPlan({ state, update, toggleIn }: Props) {
         <p className="text-sm text-muted-foreground">A great relationship has some combination of these five things. Tap the ones you can already see.</p>
         <ChipRow>
           {HOW_WILL_I_KNOW.map((h, i) => (
-            <Chip key={h.label} on={state.know.includes(i)} onClick={() => toggleIn("know", i)}>
+            <Chip key={h.label} multi on={state.know.includes(i)} onClick={() => toggleIn("know", i)}>
               {h.label} — {h.hint}
             </Chip>
           ))}

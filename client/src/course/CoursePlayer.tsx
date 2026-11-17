@@ -53,7 +53,7 @@ function StoryChips() {
       <p>Before you watch — which of these sounds like your story?</p>
       <ChipRow>
         {opts.map((o, i) => (
-          <Chip key={o} on={picked.includes(i)} onClick={() => setPicked(picked.includes(i) ? picked.filter((x) => x !== i) : [...picked, i])}>
+          <Chip key={o} multi on={picked.includes(i)} onClick={() => setPicked(picked.includes(i) ? picked.filter((x) => x !== i) : [...picked, i])}>
             {o}
           </Chip>
         ))}
