@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Book from "./pages/Book";
 import Course from "./pages/Course";
+import CoursePlayer from "./course/CoursePlayer";
 import Speaking from "./pages/Speaking";
 import Coaching from "./pages/Coaching";
 import Layout from "./components/Layout";
@@ -19,6 +20,8 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/book" component={Book} />
       <Route path="/course" component={Course} />
+      <Route path="/course/learn" component={CoursePlayer} />
+      <Route path="/course/learn/:lessonId" component={CoursePlayer} />
       <Route path="/speaking" component={Speaking} />
       <Route path="/coaching" component={Coaching} />
       <Route path="/404" component={NotFound} />

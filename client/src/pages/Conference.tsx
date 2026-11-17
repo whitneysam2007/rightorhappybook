@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen, GraduationCap, Download, CheckCircle, Instagram } from "lucide-react";
 
@@ -103,11 +104,11 @@ export default function Conference() {
                 <p className="text-sm text-primary/90 font-medium mb-2">
                   Enroll now and get a free e-copy of the book included.
                 </p>
-                <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer">
+                <Link href="/course">
                   <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider text-sm px-6">
                     Enroll Now <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

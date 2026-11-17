@@ -569,11 +569,11 @@ export default function Home() {
                 Get the Book
               </Button>
             </a>
-            <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer">
+            <Link href="/course">
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-semibold uppercase tracking-wider px-8">
                 Enroll in Course
               </Button>
-            </a>
+            </Link>
             <Link href="/coaching">
               <Button size="lg" variant="outline" className="border-white/60 text-white/90 hover:bg-white/10 font-semibold uppercase tracking-wider px-8">
                 Book Coaching

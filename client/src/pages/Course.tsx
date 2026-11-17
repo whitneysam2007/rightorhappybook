@@ -5,23 +5,31 @@ import { CheckCircle, Play, BookOpen, Users, Award, ArrowRight } from "lucide-re
 const modules = [
   {
     title: "Welcome",
-    lessons: ["Course Introduction", "How to Use This Course", "Your Dating Journey Starts Here"],
+    lessons: ["Welcome", "Read the E-Book", "Right or Happy?"],
   },
   {
     title: "Dating in the World of Right",
-    lessons: ["Understanding the World of Right", "The Right Story", "Superficially Focused", "Alienating Others", "When Things Go to Plan"],
+    lessons: ["Dissecting My Story", "Dissecting My Story Tool", "Discovering What Really Matters", "Needs and Nope List"],
   },
   {
     title: "Entering the World of Happy",
-    lessons: ["Introduction to Happy", "Step 1: Consider Other People", "Step 2: Be Curious", "Step 3: Be Helpful by Being Straightforward"],
+    lessons: [
+      "The World of Happy",
+      "Improving My Dating State of Mind",
+      "Pre-Date",
+      "During the Date",
+      "Free Dating Questions Guide",
+      "Post Date",
+      "Say What You Need to Say",
+    ],
   },
   {
     title: "Dating Tools",
-    lessons: ["Practical Conversation Starters", "Reading Authentic Signals", "Building Connection in Real Time", "How Will I Know?"],
+    lessons: ["Finding Someone to Date", "Finding Someone to Date Tool", "The First 3 Dates", "The First 3 Dates Tool"],
   },
   {
     title: "Wrap Up",
-    lessons: ["Final Thoughts", "Your Action Plan", "Community & Next Steps"],
+    lessons: ["Conclusion — Your Action Plan"],
   },
 ];
 
@@ -38,29 +46,31 @@ export default function Course() {
             </h1>
             <p className="text-xl text-muted-foreground mb-4">The Complete Course</p>
             <p className="text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto">
-              Go deeper than the book. This self-paced video course walks you through the entire authenticity framework with practical exercises, real-world examples, and tools you can use immediately.
+              Go deeper than the book. Ten short videos, five tools you actually use, and an action plan at the end — built around the way you really date, not a checklist.
             </p>
             <div className="flex flex-wrap justify-center gap-6 mb-10">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Play className="h-4 w-4 text-primary" />
-                <span>16 Video Lessons</span>
+                <span>10 videos · 41.7 minutes</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <BookOpen className="h-4 w-4 text-primary" />
-                <span>5 Modules</span>
+                <span>19 lessons · 5 modules</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Users className="h-4 w-4 text-primary" />
-                <span>Self-Paced</span>
+                <span>Self-paced</span>
               </div>
             </div>
             <div className="bg-card border border-primary/30 rounded-lg p-8 inline-block">
+              <p className="text-3xl font-serif font-bold mb-1">$49.99</p>
               <p className="text-sm text-muted-foreground mb-6">Lifetime access. One payment. No subscription.</p>
-              <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer">
+              <Link href="/course/learn">
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider px-10">
-                  Enroll Now <ArrowRight className="ml-2 h-4 w-4" />
+                  Start the Course <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-              </a>
+              </Link>
+              <p className="text-xs text-muted-foreground mt-4">Preview build — the payment step comes next.</p>
             </div>
           </div>
         </div>
@@ -71,16 +81,16 @@ export default function Course() {
         <div className="container">
           <div className="text-center mb-16">
             <p className="text-sm uppercase tracking-[0.3em] text-primary font-medium mb-4">Outcomes</p>
-            <h2 className="font-serif text-3xl md:text-5xl font-bold">What You'll Learn</h2>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold">What You&rsquo;ll Learn</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {[
-              "Identify whether you're dating in the 'World of Right' or 'World of Happy'",
-              "Break free from self-focused dating patterns that sabotage connection",
-              "Apply the 3-step authenticity framework to every interaction",
-              "Read signals of genuine interest vs. performance",
-              "Build conversations that create real intimacy",
-              "Develop a personal action plan for authentic dating",
+              "Catch the signs that you're dating in the World of Right — and see what to do about them",
+              "Take your own dating story apart, question by question, and name what you want to change",
+              "Build a needs and nopes list that actually matters, and throw out the rest",
+              "Listen with curiosity, and ask questions that get to who someone really is",
+              "Say what you need to say — plainly, kindly, and in your own words",
+              "Plan real dates, ask real people out, and leave with a personal action plan",
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
@@ -132,15 +142,15 @@ export default function Course() {
           <Award className="h-12 w-12 text-primary mx-auto mb-6" />
           <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Start Your Journey Today</h2>
           <p className="text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
-            One payment. Lifetime access. No subscriptions, no upsells — just the tools you need to date authentically.
+            One payment of $49.99. Lifetime access. No subscriptions, no upsells — just the tools you need to date authentically.
           </p>
           <div className="bg-background border border-primary/30 rounded-lg p-8 max-w-sm mx-auto">
-            <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer" className="block">
+            <Link href="/course/learn" className="block">
               <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider">
-                Enroll Now
+                Start the Course
               </Button>
-            </a>
-            <p className="text-xs text-muted-foreground mt-4">You'll be taken to the course platform to complete enrollment.</p>
+            </Link>
+            <p className="text-xs text-muted-foreground mt-4">Preview build — the payment step comes next.</p>
           </div>
         </div>
       </section>
