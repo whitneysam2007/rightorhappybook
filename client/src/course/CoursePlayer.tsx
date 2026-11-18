@@ -1,10 +1,11 @@
 // Course player: lesson list + one lesson at a time, one idea per screen.
 // LEARNING and APPLYING are labelled on every lesson. Answers save on-device.
 import { useEffect, useState } from "react";
-import { Link, useParams } from "wouter";
+import { Link, useLocation, useParams } from "wouter";
 import { ArrowRight, BookOpen, Check, ChevronDown, ChevronRight, Clock, Play } from "lucide-react";
 import { LESSONS, MODULES, PDFS, lessonById } from "./data";
 import { useCourseState } from "./store";
+import { supabase } from "./supabase";
 import { ApplyBlock, Chip, ChipRow, LessonNav, ModeBadge, VideoEmbed } from "./ui";
 import {
   ActionPlan,
@@ -113,7 +114,12 @@ function PathCheck() {
 
 export default function CoursePlayer() {
   const params = useParams<{ lessonId?: string }>();
+  const [, setLocation] = useLocation();
   const { state, update, toggleIn, markComplete } = useCourseState();
+  const logOut = async () => {
+    await supabase.auth.signOut();
+    setLocation("/course/login");
+  };
   const lessonId = params.lessonId ? parseInt(params.lessonId, 10) : null;
   const lesson = lessonId ? LESSONS.find((l) => l.id === lessonId) : null;
   const [finished, setFinished] = useState(false);
@@ -190,8 +196,11 @@ export default function CoursePlayer() {
             </div>
           ))}
           <p className="text-xs text-muted-foreground">
-            Preview build: no payment or enrollment step yet — that comes after Sam reviews this. Your answers save on this device only.
+            Your answers save on this device only.
           </p>
+          <button type="button" onClick={logOut} className="mt-4 text-xs text-muted-foreground underline hover:text-foreground">
+            Log out
+          </button>
         </div>
       </div>
     );

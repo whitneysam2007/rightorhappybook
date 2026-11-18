@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { STRIPE_PAYMENT_LINK } from "@/course/config";
 import {
   CheckCircle,
   Play,
@@ -122,14 +123,22 @@ const faqs = [
 ];
 
 function StartButton({ label = "Start the Course" }: { label?: string }) {
+  const button = (
+    <Button
+      size="lg"
+      className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider px-10"
+    >
+      {label} <ArrowRight className="ml-2 h-4 w-4" />
+    </Button>
+  );
+  // Once the Stripe Payment Link is set, Buy goes to Stripe checkout.
+  // Until then, the preview behavior stays: straight into the course.
+  if (STRIPE_PAYMENT_LINK) {
+    return <a href={STRIPE_PAYMENT_LINK}>{button}</a>;
+  }
   return (
     <Link href="/course/learn">
-      <Button
-        size="lg"
-        className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 font-semibold uppercase tracking-wider px-10"
-      >
-        {label} <ArrowRight className="ml-2 h-4 w-4" />
-      </Button>
+      {button}
     </Link>
   );
 }
