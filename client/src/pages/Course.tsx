@@ -71,7 +71,7 @@ const notForYou = [
 
 const included = [
   "19 lessons across 5 modules, self-paced",
-  "10 short videos. 41.7 minutes in all",
+  "10 short videos",
   "The full e-book, How to Date Authentically, to read inside the course",
   "Interactive tools you use: your story, your needs and nopes, your questions, your words, your dates",
   "A personal action plan at the end, with the How Will I Know check",
@@ -85,7 +85,7 @@ const faqs = [
   },
   {
     q: "How long does the course take?",
-    a: "The videos add up to under 42 minutes. The tools take longer. The Story Tool is about half an hour on its own, and it's worth taking slow. Go at your pace.",
+    a: "Ten short videos, and the tools take the real time. The Story Tool is about half an hour on its own, and it's worth taking slow. Go at your pace.",
   },
   {
     q: "Do I need to buy the book first?",
@@ -152,7 +152,7 @@ export default function Course() {
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-10 text-sm text-muted-foreground">
               <span className="flex items-center gap-2">
                 <Play className="h-4 w-4 text-primary" />
-                10 videos · 41.7 minutes
+                10 videos
               </span>
               <span className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4 text-primary" />
