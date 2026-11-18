@@ -2,7 +2,7 @@
 // LEARNING and APPLYING are labelled on every lesson. Answers save on-device.
 import { useEffect, useState } from "react";
 import { Link, useParams } from "wouter";
-import { BookOpen, Check, ChevronRight, Clock, Play } from "lucide-react";
+import { ArrowRight, BookOpen, Check, ChevronDown, ChevronRight, Clock, Play } from "lucide-react";
 import { LESSONS, MODULES, PDFS, lessonById } from "./data";
 import { useCourseState } from "./store";
 import { ApplyBlock, Chip, ChipRow, LessonNav, ModeBadge, VideoEmbed } from "./ui";
@@ -117,11 +117,15 @@ export default function CoursePlayer() {
   const lessonId = params.lessonId ? parseInt(params.lessonId, 10) : null;
   const lesson = lessonId ? LESSONS.find((l) => l.id === lessonId) : null;
   const [finished, setFinished] = useState(false);
+  const [showContent, setShowContent] = useState(false);
   useEffect(() => setFinished(false), [lessonId]);
 
   // ---------- Lesson list ----------
   if (!lesson) {
     const done = state.completed.length;
+    const nextUnfinished = LESSONS.find((l) => !state.completed.includes(l.id));
+    const resumeId = nextUnfinished ? nextUnfinished.id : 1;
+    const resumeLabel = done === 0 ? "Get Started" : done === 19 ? "Review the course" : "Pick up where I left off";
     return (
       <div className="container py-10">
         <div className="mx-auto max-w-2xl">
@@ -144,7 +148,23 @@ export default function CoursePlayer() {
               <div className="h-full bg-primary transition-all" style={{ width: `${(done / 19) * 100}%` }} />
             </div>
           </div>
-          {MODULES.map((mod, mi) => (
+          <div className="mb-8">
+            <Link href={`/course/learn/${resumeId}`} className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+              {resumeLabel} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="mb-8">
+            <button
+              type="button"
+              onClick={() => setShowContent((v) => !v)}
+              aria-expanded={showContent}
+              className="flex w-full items-center justify-between rounded-lg border border-[oklch(0.4_0_0)] bg-[oklch(0.2_0_0)] px-4 py-3.5 text-sm font-semibold shadow-[0_10px_30px_-12px_rgba(0,0,0,0.8)]"
+            >
+              View course content
+              <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${showContent ? "rotate-180" : ""}`} />
+            </button>
+          </div>
+          {showContent && MODULES.map((mod, mi) => (
             <div key={mod.title} className="mb-8">
               <h2 className="mb-3 text-sm font-bold uppercase tracking-[0.15em] text-primary">
                 Module {mi + 1} — {mod.title}
