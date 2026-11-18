@@ -45,7 +45,7 @@ const modules = [
   {
     title: "Dating Tools",
     outcome: "Turn all of it into real dates with real people. And know who is worth asking out again.",
-    lessons: ["Finding Someone to Date", "Finding Someone to Date Tool", "The First 3 Dates", "The First 3 Dates Tool"],
+    lessons: ["Finding Someone to Date", "The First 3 Dates", "The First 3 Dates Tool"],
     leaveWith: "A plan for your first three dates and an invitation you can send.",
   },
   {
@@ -71,7 +71,7 @@ const notForYou = [
 ];
 
 const included = [
-  "19 lessons across 5 modules, self-paced",
+  "18 lessons across 5 modules, self-paced",
   "10 short videos",
   "The full e-book, How to Date Authentically, to read inside the course",
   "Interactive tools you use: your story, your needs and nopes, your questions, your words, your dates",
@@ -165,7 +165,7 @@ export default function Course() {
               </span>
               <span className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4 text-primary" />
-                19 lessons · 5 modules
+                18 lessons · 5 modules
               </span>
               <span className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-primary" />

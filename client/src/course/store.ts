@@ -1,5 +1,5 @@
 // Course answers live on the learner's own device (localStorage only).
-// Nothing is sent anywhere. Lesson 19 offers "email me my action plan"
+// Nothing is sent anywhere. Lesson 18 offers "email me my action plan"
 // as a mailto compose (interim, a real send comes later).
 
 import { useCallback, useEffect, useState } from "react";
@@ -22,7 +22,7 @@ export type CourseState = {
   questions: number[];
   reflections: Reflection[];
   messageSit: string;
-  message: { fact: string; feel: string; need: string; req: string };
+  messages: Record<string, string>; // per-situation edited version of what to say
   gridNames: string[];
   grid: Record<string, boolean>;
   askWhen: string;
@@ -49,7 +49,7 @@ export const DEFAULT_STATE: CourseState = {
   questions: [],
   reflections: [],
   messageSit: "",
-  message: { fact: "", feel: "", need: "", req: "" },
+  messages: {},
   gridNames: ["", ""],
   grid: {},
   askWhen: "",
@@ -160,8 +160,8 @@ export function buildActionPlanText(state: CourseState): string {
     `  Date 3: ${state.plan.d3 || "Not set yet"}, ask: ${state.plan.q3 || "Not set yet"}`,
     `  How I'll ask: ${state.plan.invite || "Not set yet"}`,
     "",
-    state.message.fact || state.message.feel
-      ? `What I need to say: ${[state.message.fact, state.message.feel, state.message.need, state.message.req].filter(Boolean).join(" ")}`
+    state.messageSit && state.messages[state.messageSit]
+      ? `What I need to say: ${state.messages[state.messageSit]}`
       : "",
     latest ? `After my last date, what I want to change: ${latest.change || "Not set yet"}` : "",
     "",

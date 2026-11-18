@@ -131,7 +131,7 @@ export default function CoursePlayer() {
     const done = state.completed.length;
     const nextUnfinished = LESSONS.find((l) => !state.completed.includes(l.id));
     const resumeId = nextUnfinished ? nextUnfinished.id : 1;
-    const resumeLabel = done === 0 ? "Get Started" : done === 19 ? "Review the course" : "Pick up where I left off";
+    const resumeLabel = done === 0 ? "Get Started" : done === LESSONS.length ? "Review the course" : "Pick up where I left off";
     return (
       <div className="container py-10">
         <div className="mx-auto max-w-2xl">
@@ -142,16 +142,16 @@ export default function CoursePlayer() {
           </p>
           <div className="mb-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-2"><Play className="h-4 w-4 text-primary" /> 10 videos · 41.7 minutes</span>
-            <span className="inline-flex items-center gap-2"><BookOpen className="h-4 w-4 text-primary" /> 19 lessons · 5 modules</span>
+            <span className="inline-flex items-center gap-2"><BookOpen className="h-4 w-4 text-primary" /> 18 lessons · 5 modules</span>
             <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> Self-paced · lifetime access</span>
           </div>
           <div className="mb-8">
             <div className="flex justify-between text-sm mb-2">
               <span>Your progress</span>
-              <span>{done} of 19 done</span>
+              <span>{done} of {LESSONS.length} done</span>
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-muted">
-              <div className="h-full bg-primary transition-all" style={{ width: `${(done / 19) * 100}%` }} />
+              <div className="h-full bg-primary transition-all" style={{ width: `${(done / LESSONS.length) * 100}%` }} />
             </div>
           </div>
           <div className="mb-8">
@@ -206,8 +206,8 @@ export default function CoursePlayer() {
     );
   }
 
-  // ---------- Finish screen (after "Finish the course" on Lesson 19) ----------
-  if (finished && lesson?.id === 19) {
+  // ---------- Finish screen (after "Finish the course" on Lesson 18) ----------
+  if (finished && lesson?.id === 18) {
     return (
       <div className="container py-8">
         <div className="relative mx-auto max-w-2xl">
@@ -234,14 +234,27 @@ export default function CoursePlayer() {
         <div aria-hidden className="mt-5 h-px w-full bg-primary/50" />
 
         <div className="mt-8 rounded-2xl border border-[oklch(0.4_0_0)] bg-[oklch(0.2_0_0)] p-5 shadow-[0_28px_70px_-18px_rgba(0,0,0,0.9)] [&>*:first-child]:mt-0 sm:p-7">
-          <LessonBody id={lesson.id} state={state} update={update} toggleIn={toggleIn} />
+          <LessonBody
+            id={lesson.id}
+            state={state}
+            update={update}
+            toggleIn={toggleIn}
+            onAdvance={
+              lesson.id === 13
+                ? () => {
+                    markComplete(13);
+                    setLocation("/course/learn/14");
+                  }
+                : undefined
+            }
+          />
         </div>
 
         <LessonNav
           lessonId={lesson.id}
           onDone={() => {
             markComplete(lesson.id);
-            if (lesson.id === 19) setFinished(true);
+            if (lesson.id === 18) setFinished(true);
           }}
           isDone={state.completed.includes(lesson.id)}
         />
@@ -282,7 +295,7 @@ function Confetti() {
   );
 }
 
-// --- Finish screen: shown after "Finish the course" on Lesson 19 ---
+// --- Finish screen: shown after "Finish the course" on Lesson 18 ---
 function FinishScreen() {
   const [copyState, setCopyState] = useState<"idle" | "copied" | "manual">("idle");
   const courseUrl = "https://rightorhappybook.com/course";
@@ -343,11 +356,12 @@ function FinishScreen() {
   );
 }
 
-function LessonBody({ id, state, update, toggleIn }: {
+function LessonBody({ id, state, update, toggleIn, onAdvance }: {
   id: number;
   state: ReturnType<typeof useCourseState>["state"];
   update: ReturnType<typeof useCourseState>["update"];
   toggleIn: ReturnType<typeof useCourseState>["toggleIn"];
+  onAdvance?: () => void;
 }) {
   const props = { state, update, toggleIn };
   switch (id) {
@@ -545,7 +559,7 @@ function LessonBody({ id, state, update, toggleIn }: {
             <p>After each date, take a few minutes and think it through. What did you like? What didn&rsquo;t you like? What do you remember about them? How do you feel, and do you want to go out again? Decide on what actually happened, not on your story.</p>
           </LearnText>
           <ApplyBlock label="Applying: after the date">
-            <ReflectionTool {...props} />
+            <ReflectionTool {...props} onAdvance={onAdvance} />
           </ApplyBlock>
         </>
       );
@@ -592,17 +606,6 @@ function LessonBody({ id, state, update, toggleIn }: {
     case 16:
       return (
         <>
-          <LearnText>
-            <p>This is the same grid from the last lesson, your answers are already here. No need to print anything. It lives right here, and you can come back to it whenever you want.</p>
-          </LearnText>
-          <ApplyBlock label="Applying: the grid">
-            <GridTool {...props} />
-          </ApplyBlock>
-        </>
-      );
-    case 17:
-      return (
-        <>
           <VideoEmbed videoKey="threeDates" title="The First 3 Dates" />
           <div className="mt-6">
             <LearnText>
@@ -610,12 +613,12 @@ function LessonBody({ id, state, update, toggleIn }: {
               <p>And one challenge, especially if you&rsquo;re a woman watching this: you don&rsquo;t have to ask guys out. But I challenge you to try, and to ask yourself whether <em>not</em> asking is part of your story, or something that really matters. A lot of guys would love to be asked out. I won&rsquo;t push much harder than that. I just challenge you.</p>
             </LearnText>
           </div>
-          <Link href="/course/learn/18" className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
+          <Link href="/course/learn/17" className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
             Plan my three dates <ChevronRight className="h-4 w-4" />
           </Link>
         </>
       );
-    case 18:
+    case 17:
       return (
         <>
           <LearnText>
@@ -626,7 +629,7 @@ function LessonBody({ id, state, update, toggleIn }: {
           </ApplyBlock>
         </>
       );
-    case 19:
+    case 18:
       return (
         <>
           <VideoEmbed videoKey="wrapUp" title="Conclusion" />

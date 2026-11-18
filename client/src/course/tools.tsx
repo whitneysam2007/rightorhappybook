@@ -26,6 +26,7 @@ type Props = {
   state: CourseState;
   update: (p: Partial<CourseState>) => void;
   toggleIn: (field: "signs" | "know" | "questions" | "listenFocus", v: number, max?: number) => void;
+  onAdvance?: () => void;
 };
 
 // ---------- Lesson 1: why I'm here ----------
@@ -310,7 +311,7 @@ export function QuestionDeck({ state, toggleIn }: Props) {
 }
 
 // ---------- Lesson 13: post-date reflection (reusable) ----------
-export function ReflectionTool({ state, update }: Props) {
+export function ReflectionTool({ state, update, onAdvance }: Props) {
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<Record<string, string>>({});
   const [justSaved, setJustSaved] = useState(false);
@@ -320,6 +321,13 @@ export function ReflectionTool({ state, update }: Props) {
   const save = () => {
     const entry: Reflection = { date: new Date().toLocaleDateString(), name: "", ...draft };
     update({ reflections: [...state.reflections, entry] });
+    // Finishing a reflection moves the lesson on, the same as the Next
+    // button below. Without a callback (standalone use), fall back to
+    // resetting for another reflection.
+    if (onAdvance) {
+      onAdvance();
+      return;
+    }
     setDraft({});
     setStep(0);
     setJustSaved(true);
@@ -364,11 +372,13 @@ export function ReflectionTool({ state, update }: Props) {
 // ---------- Lesson 14: Say What You Need to Say ----------
 export function SayItTool({ state, update }: Props) {
   const sit = SAY_IT_SITUATIONS.find((s) => s.key === state.messageSit);
-  const msg = state.message;
-  const draft = [msg.fact, msg.feel, msg.need, msg.req].filter(Boolean).join(" ");
+  // The learner's edited version for this situation, or the example until
+  // they change it. Edits are kept per situation, so switching back and
+  // forth never clobbers anything.
+  const text = sit ? (state.messages[sit.key] ?? sit.example) : "";
   return (
     <div className="space-y-4">
-      <p>Being straightforward sounds scary. I know. But it saves time, and it moves things forward. Pick the one you&rsquo;re facing, then write your own version first, and after that, see an example of how it could sound. Say it with &ldquo;I&rdquo;, keep it short, and say it plainly.</p>
+      <p>Pick the one you&rsquo;re facing, then make the example yours. Say it with &ldquo;I&rdquo;, keep it short, and say it plainly.</p>
       <ChipRow>
         {SAY_IT_SITUATIONS.map((s) => (
           <Chip key={s.key} on={state.messageSit === s.key} onClick={() => update({ messageSit: s.key })}>{s.label}</Chip>
@@ -376,34 +386,19 @@ export function SayItTool({ state, update }: Props) {
       </ChipRow>
       {sit && (
         <>
-          <div className="space-y-3">
-            <div>
-              <label className="text-sm font-semibold">Fact: what is true for you?</label>
-              <input value={msg.fact} onChange={(e) => update({ message: { ...msg, fact: e.target.value } })} placeholder="What happened, in plain words…" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
-            </div>
-            <div>
-              <label className="text-sm font-semibold">Feeling: state how you feel</label>
-              <input value={msg.feel} onChange={(e) => update({ message: { ...msg, feel: e.target.value } })} placeholder="I felt…" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
-            </div>
-            <div>
-              <label className="text-sm font-semibold">Need: what do you need?</label>
-              <input value={msg.need} onChange={(e) => update({ message: { ...msg, need: e.target.value } })} placeholder="I need…" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
-            </div>
-            <div>
-              <label className="text-sm font-semibold">Request: what are you asking for?</label>
-              <input value={msg.req} onChange={(e) => update({ message: { ...msg, req: e.target.value } })} placeholder="Would you be willing to…" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
-            </div>
+          <div>
+            <label className="text-sm font-semibold">Your version</label>
+            <textarea
+              rows={5}
+              value={text}
+              onChange={(e) => update({ messages: { ...state.messages, [sit.key]: e.target.value } })}
+              className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm leading-relaxed"
+            />
+            <p className="mt-2 text-xs text-muted-foreground">Start with the example, then change it until it sounds like you.</p>
           </div>
-          <div className="rounded-lg border border-border bg-card p-4 text-sm leading-relaxed">
-            {draft || "Your words will show up here as you write them."}
-          </div>
-          <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
-            <p className="font-semibold">Here&rsquo;s an example of how you could say it.</p>
-            <p className="mt-1">{sit.example}</p>
-            {"freshDraft" in sit && (sit as { freshDraft?: boolean }).freshDraft && (
-              <p className="mt-2 text-xs text-muted-foreground">Sam wrote the other examples in his book. This one is a draft, in his words, for him to check.</p>
-            )}
-          </div>
+          {"freshDraft" in sit && (sit as { freshDraft?: boolean }).freshDraft && (
+            <p className="text-xs text-muted-foreground">Sam wrote the other examples in his book. This one is a draft, in his words, for him to check.</p>
+          )}
         </>
       )}
       <p className="text-sm text-muted-foreground">A &ldquo;no&rdquo; means nothing about you. It means they&rsquo;re not in a place to connect.</p>
@@ -477,12 +472,6 @@ export function GridTool({ state, update }: Props) {
         </table>
       </div>
       <p className="text-xs text-muted-foreground">Tap a column name to see what it means. Admiration, common values, trust, fun, work ethic, and attraction still counts.</p>
-      <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 text-sm leading-relaxed">
-        {top.length === 0
-          ? "The two with the most checks are the ones to ask out, or at least spend some time with this week."
-          : `Top two right now: ${top.map((t) => `${t.name} (${t.score} of 6)`).join(", ")}.`}
-        {top.length > 0 && " So who is it, and when this week?"}
-      </div>
       <div>
         <label htmlFor="ask-when" className="text-sm font-semibold">I&rsquo;ll ask them out…</label>
         <input id="ask-when" value={state.askWhen} onChange={(e) => update({ askWhen: e.target.value })} placeholder="e.g. This Thursday" className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm" />
@@ -536,7 +525,7 @@ export function PlannerTool({ state, update }: Props) {
   );
 }
 
-// ---------- Lesson 19: action plan, in three steps ----------
+// ---------- Lesson 18: action plan, in three steps ----------
 // Step 1: the plan itself, emailed to yourself. Step 2: How Will I Know?
 // (book chapter 12) as its own screen: pick one or two things to watch
 // for on your next date. Step 3: the commitment, next step, by when.
@@ -586,8 +575,8 @@ export function ActionPlan({ state, update }: Props) {
             <p><span className="font-semibold">The two people to ask out:</span> {top.map((t) => `${t.name} (${t.score} of 6)`).join(", ") || "Not set yet"}{state.askWhen ? `, ${state.askWhen}` : ""}</p>
             <p><span className="font-semibold">My first three dates{state.planFor ? ` with ${state.planFor}` : ""}:</span> {state.plan.d1 || "Not set yet"} · {state.plan.d2 || "Not set yet"} · {state.plan.d3 || "Not set yet"}</p>
             <p><span className="font-semibold">How I&rsquo;ll ask:</span> {state.plan.invite || "Not set yet"}</p>
-            {(state.message.fact || state.message.feel) && (
-              <p><span className="font-semibold">What I need to say:</span> {[state.message.fact, state.message.feel, state.message.need, state.message.req].filter(Boolean).join(" ")}</p>
+            {state.messageSit && state.messages[state.messageSit] && (
+              <p><span className="font-semibold">What I need to say:</span> {state.messages[state.messageSit]}</p>
             )}
             <p><span className="font-semibold">Signs of the World of Right I spotted:</span> {state.signs.length} of 8</p>
           </div>

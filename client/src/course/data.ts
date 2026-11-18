@@ -30,8 +30,8 @@ export const MODULES: Module[] = [
   { title: "Welcome", lessons: [1, 2, 3] },
   { title: "Dating in the World of Right", lessons: [4, 5, 6, 7] },
   { title: "Entering the World of Happy", lessons: [8, 9, 10, 11, 12, 13, 14] },
-  { title: "Dating Tools", lessons: [15, 16, 17, 18] },
-  { title: "Wrap Up", lessons: [19] },
+  { title: "Dating Tools", lessons: [15, 16, 17] },
+  { title: "Wrap Up", lessons: [18] },
 ];
 
 export type LessonMeta = {
@@ -59,10 +59,9 @@ export const LESSONS: LessonMeta[] = [
   { id: 13, module: 3, title: "Post Date", kind: "tool", mode: "APPLYING" },
   { id: 14, module: 3, title: "Say What You Need to Say", kind: "video", video: "sayIt", mode: "LEARNING + APPLYING" },
   { id: 15, module: 4, title: "Finding Someone to Date", kind: "video", video: "findingSomeone", mode: "LEARNING + APPLYING" },
-  { id: 16, module: 4, title: "Finding Someone to Date Tool", kind: "tool", mode: "APPLYING" },
-  { id: 17, module: 4, title: "The First 3 Dates", kind: "intro", video: "threeDates", mode: "LEARNING" },
-  { id: 18, module: 4, title: "The First 3 Dates Tool", kind: "tool", mode: "APPLYING" },
-  { id: 19, module: 5, title: "Conclusion: Your Action Plan", kind: "plan", video: "wrapUp", mode: "LEARNING + APPLYING" },
+  { id: 16, module: 4, title: "The First 3 Dates", kind: "intro", video: "threeDates", mode: "LEARNING" },
+  { id: 17, module: 4, title: "The First 3 Dates Tool", kind: "tool", mode: "APPLYING" },
+  { id: 18, module: 5, title: "Conclusion: Your Action Plan", kind: "plan", video: "wrapUp", mode: "LEARNING + APPLYING" },
 ];
 
 export const lessonById = (id: number) => LESSONS.find((l) => l.id === id)!;
@@ -269,7 +268,7 @@ export const DATE_PLANS = [
   },
 ];
 
-// --- Lesson 19: How Will I Know? (book chapter 12) ---
+// --- Lesson 18: How Will I Know? (book chapter 12) ---
 export const HOW_WILL_I_KNOW = [
   { label: "Mutual admiration", hint: "I respect who they are" },
   { label: "Common values", hint: "We care about the same things" },
