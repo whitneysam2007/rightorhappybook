@@ -1,6 +1,6 @@
-// Course answers live on the learner's own device — localStorage only.
+// Course answers live on the learner's own device (localStorage only).
 // Nothing is sent anywhere. Lesson 19 offers "email me my action plan"
-// as a mailto compose (interim — a real send comes later).
+// as a mailto compose (interim, a real send comes later).
 
 import { useCallback, useEffect, useState } from "react";
 import { SAM_MANTRA } from "./data";
@@ -80,7 +80,7 @@ export function useCourseState() {
     try {
       localStorage.setItem(KEY, JSON.stringify(state));
     } catch {
-      // storage full or unavailable — answers just don't persist
+      // storage full or unavailable, answers just don't persist
     }
   }, [state]);
 
@@ -139,35 +139,35 @@ export function buildActionPlanText(state: CourseState): string {
   const top = gridTopTwo(state);
   const latest = state.reflections[state.reflections.length - 1];
   const lines = [
-    "MY ACTION PLAN — How to Date Authentically",
+    "MY ACTION PLAN: How to Date Authentically",
     "",
-    `What I want to change about my dating (from my story): ${state.story.q14 || "—"}`,
+    `What I want to change about my dating (from my story): ${state.story.q14 || "Not set yet"}`,
     "",
-    `What really matters to me: ${ess.needs.join(", ") || "—"}`,
-    `True deal-breakers: ${ess.nopes.join(", ") || "—"}`,
+    `What really matters to me: ${ess.needs.join(", ") || "Not set yet"}`,
+    `True deal-breakers: ${ess.nopes.join(", ") || "Not set yet"}`,
     "",
-    `My pre-date mantra: ${state.mantra || "—"}`,
+    `My pre-date mantra: ${state.mantra || "Not set yet"}`,
     "",
-    `Listening — what I'm working on: ${state.listenFocus.map((i) => ["Be curious", "Show interest", "Don't interrupt", "Put the phone away", "Repeat back", "Show empathy", "Be open-minded"][i]).join(", ") || "—"}`,
+    `Listening: what I'm working on: ${state.listenFocus.map((i) => ["Be curious", "Show interest", "Don't interrupt", "Put the phone away", "Repeat back", "Show empathy", "Be open-minded"][i]).join(", ") || "Not set yet"}`,
     "",
-    `My 3 questions for my next date: ${state.questions.map((i) => ["Something good that happened lately?", "What do you hope to accomplish with your dating journey?", "What is your go-to happy memory?", "Have you ever had your heart broken? How did it shape you?", "If you could solve one world problem, what would it be?", "What did you want to be when you were little?", "What is something you worry about?", "Tell me about your parents — what are they like?", "What is the most fun you have ever had?", "If your life were a telenovela, what would the weird twist be?"][i]).join(" | ") || "—"}`,
+    `My 3 questions for my next date: ${state.questions.map((i) => ["Something good that happened lately?", "What do you hope to accomplish with your dating journey?", "What is your go-to happy memory?", "Have you ever had your heart broken? How did it shape you?", "If you could solve one world problem, what would it be?", "What did you want to be when you were little?", "What is something you worry about?", "Tell me about your parents: what are they like?", "What is the most fun you have ever had?", "If your life were a telenovela, what would the weird twist be?"][i]).join(" | ") || "Not set yet"}`,
     "",
-    `The two people to ask out: ${top.map((t) => `${t.name} (${t.score}/6)`).join(", ") || "—"}${state.askWhen ? ` — ${state.askWhen}` : ""}`,
+    `The two people to ask out: ${top.map((t) => `${t.name} (${t.score}/6)`).join(", ") || "Not set yet"}${state.askWhen ? `, ${state.askWhen}` : ""}`,
     "",
     `My first three dates${state.planFor ? ` with ${state.planFor}` : ""}:`,
-    `  Date 1: ${state.plan.d1 || "—"} — ask: ${state.plan.q1 || "—"}`,
-    `  Date 2: ${state.plan.d2 || "—"} — ask: ${state.plan.q2 || "—"}`,
-    `  Date 3: ${state.plan.d3 || "—"} — ask: ${state.plan.q3 || "—"}`,
-    `  How I'll ask: ${state.plan.invite || "—"}`,
+    `  Date 1: ${state.plan.d1 || "Not set yet"}, ask: ${state.plan.q1 || "Not set yet"}`,
+    `  Date 2: ${state.plan.d2 || "Not set yet"}, ask: ${state.plan.q2 || "Not set yet"}`,
+    `  Date 3: ${state.plan.d3 || "Not set yet"}, ask: ${state.plan.q3 || "Not set yet"}`,
+    `  How I'll ask: ${state.plan.invite || "Not set yet"}`,
     "",
     state.message.fact || state.message.feel
       ? `What I need to say: ${[state.message.fact, state.message.feel, state.message.need, state.message.req].filter(Boolean).join(" ")}`
       : "",
-    latest ? `After my last date, what I want to change: ${latest.change || "—"}` : "",
+    latest ? `After my last date, what I want to change: ${latest.change || "Not set yet"}` : "",
     "",
-    `My next step: ${state.nextStep || "—"}${state.nextDate ? ` — by ${state.nextDate}` : ""}`,
+    `My next step: ${state.nextStep || "Not set yet"}${state.nextDate ? `, by ${state.nextDate}` : ""}`,
     "",
-    "— Built in the How to Date Authentically course (rightorhappybook.com)",
+    "Built in the How to Date Authentically course (rightorhappybook.com)",
   ];
   return lines.filter((l) => l !== "").join("\n");
 }

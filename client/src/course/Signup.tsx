@@ -1,6 +1,6 @@
 // Signup page (/course/signup). Stripe sends buyers here after payment.
 // Email confirmation is ON in Supabase, so a new account must confirm via
-// the email Supabase sends before login works — the page says that plainly.
+// the email Supabase sends before login works. The page says that plainly.
 import { useState } from "react";
 import { Link } from "wouter";
 import { supabase } from "./supabase";

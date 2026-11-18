@@ -1,4 +1,4 @@
-// How to Date Authentically — course content data.
+// How to Date Authentically: course content data.
 // Sources: CONTENT_DIGEST.md (transcripts + tool fields) and VOICE_RUBRIC.md.
 // Teaching is Sam's, paraphrased in his voice.
 
@@ -18,7 +18,7 @@ export const VIDEOS: Record<string, { id: string; minutes: string }> = {
   wrapUp: { id: "1_A9Dngc5JOHh8GBUoMDgaxz0qCdhvAjj" },
 };
 
-// The tools live in the course now — no downloads. Only the e-book
+// The tools live in the course now, no downloads. Only the e-book
 // still has a file, so learners can read it right here.
 export const PDFS = {
   ebook: "/course/how-to-date-authentically-ebook.pdf",
@@ -62,7 +62,7 @@ export const LESSONS: LessonMeta[] = [
   { id: 16, module: 4, title: "Finding Someone to Date Tool", kind: "tool", mode: "APPLYING" },
   { id: 17, module: 4, title: "The First 3 Dates", kind: "intro", video: "threeDates", mode: "LEARNING" },
   { id: 18, module: 4, title: "The First 3 Dates Tool", kind: "tool", mode: "APPLYING" },
-  { id: 19, module: 5, title: "Conclusion — Your Action Plan", kind: "plan", video: "wrapUp", mode: "LEARNING + APPLYING" },
+  { id: 19, module: 5, title: "Conclusion: Your Action Plan", kind: "plan", video: "wrapUp", mode: "LEARNING + APPLYING" },
 ];
 
 export const lessonById = (id: number) => LESSONS.find((l) => l.id === id)!;
@@ -73,7 +73,7 @@ export const prevLesson = (id: number) => LESSONS.find((l) => l.id === id - 1) ?
 export const SIGNS_OF_RIGHT = [
   "I spend a lot of time getting ready for dates so that I look really good.",
   "I hold myself hostage until the story works out",
-  "I get fixated on the outside stuff — looks, accomplishments, what other people think",
+  "I get fixated on the outside stuff, looks, accomplishments, what other people think",
   "I try to get them to fit the script I already wrote",
   "I alienate the very people I want to attract.",
   "I panic about what to tell people about them",
@@ -89,13 +89,13 @@ export const WHY_HERE = [
   "I'm tired of dating to be right",
 ];
 
-// --- Lesson 5: Story Tool — all 14 questions, 3 sections ---
+// --- Lesson 5: Story Tool: all 14 questions, 3 sections ---
 export type StorySection = { label: string; questions: { key: string; text: string; hint?: string }[] };
 export const STORY_TOOL: StorySection[] = [
   {
     label: "Building your story",
     questions: [
-      { key: "q1", text: "Describe your ideal future partner — what are they like?" },
+      { key: "q1", text: "Describe your ideal future partner: what are they like?" },
       { key: "q2", text: "How do the two of you meet? Where, when, how, why?" },
       { key: "q3", text: "What do others say about the two of you together?" },
       { key: "q4", text: "What is your relationship like?" },
@@ -104,19 +104,19 @@ export const STORY_TOOL: StorySection[] = [
   {
     label: "Exploring your story",
     questions: [
-      { key: "q5", text: "What are your favorite romantic stories — movies, books, plays?" },
+      { key: "q5", text: "What are your favorite romantic stories, movies, books, plays?" },
       { key: "q6", text: "Why do you love the stories you chose? What is it about them?" },
       { key: "q7", text: "Do you see a connection between your ideal story and the love story you chose?" },
       { key: "q8", text: "Do you feel expectations from others affecting your story? How?" },
-      { key: "q9", text: "Does your story need to happen in a certain timeframe? Do you feel rushed — and why?" },
+      { key: "q9", text: "Does your story need to happen in a certain timeframe? Do you feel rushed, and why?" },
       { key: "q10", text: "Do you see a pattern in your dating life emerging?" },
     ],
   },
   {
     label: "Questioning your story",
     questions: [
-      { key: "q11", text: "What parts of your ideal story seem realistic — and which seem more fantastic?", hint: "Write the realistic parts in the first box, the fantastic parts in the second." },
-      { key: "q12", text: "What parts feel vital — and which can you let go of?", hint: "Write what you want to keep in the first box, what you can let go of in the second." },
+      { key: "q11", text: "What parts of your ideal story seem realistic, and which seem more fantastic?", hint: "Write the realistic parts in the first box, the fantastic parts in the second." },
+      { key: "q12", text: "What parts feel vital, and which can you let go of?", hint: "Write what you want to keep in the first box, what you can let go of in the second." },
       { key: "q13", text: "What would be possible in your dating life if you didn't hold on to this story?" },
       { key: "q14", text: "What do you want to change in your dating, after thinking about your story?" },
     ],
@@ -144,17 +144,17 @@ export const NOPES_POOL = [
 
 // --- Lesson 10: mantra ---
 export const SAM_MANTRA =
-  "I am a person and they are a person. Their life is as full, crazy, fun, amazing, challenging and rich as mine. They want to be loved and find connection, and so do I. I am not afraid — I am open and ready to learn about another person.";
+  "I am a person and they are a person. Their life is as full, crazy, fun, amazing, challenging and rich as mine. They want to be loved and find connection, and so do I. I am not afraid. I am open and ready to learn about another person.";
 
 // --- Lesson 11: listening tips ---
 export const LISTENING_TIPS = [
-  "Be curious — ask about their life",
-  "Show interest — nod, eye contact",
-  "Don't interrupt — let them finish",
+  "Be curious: ask about their life",
+  "Show interest: nod, eye contact",
+  "Don't interrupt: let them finish",
   "Put the phone away",
   "Repeat back what they said",
   "Show empathy for how they feel",
-  "Be open-minded — don't judge",
+  "Be open-minded: don't judge",
 ];
 export const LISTEN_SELF_CHECK = [
   "Mostly I talked",
@@ -171,7 +171,7 @@ export const DECK_QUESTIONS = [
   "If you could solve one world problem, what would it be?",
   "What did you want to be when you were little?",
   "What is something you worry about?",
-  "Tell me about your parents — what are they like?",
+  "Tell me about your parents: what are they like?",
   "What is the most fun you have ever had?",
   "If your life were a telenovela, what would the weird twist be?",
 ];
@@ -189,7 +189,7 @@ export const REFLECTION_PROMPTS = [
 
 // --- Lesson 14: situations + examples ---
 // "like" and "down" examples follow Sam's appendix scripts. The "tell",
-// "break", "hurt" and "space" examples are fresh drafts in Sam's formula —
+// "break", "hurt" and "space" examples are fresh drafts in Sam's formula,
 // not yet approved by Sam.
 export const SAY_IT_SITUATIONS = [
   {
@@ -209,13 +209,13 @@ export const SAY_IT_SITUATIONS = [
     key: "down",
     label: "I need to let someone down",
     example:
-      "Thank you — I'm flattered that you like me. I don't feel the same way, and I'm sorry if that hurts. I want to be honest so we can both move forward.",
+      "Thank you. I'm flattered that you like me. I don't feel the same way, and I'm sorry if that hurts. I want to be honest so we can both move forward.",
   },
   {
     key: "break",
     label: "I need to break up with someone",
     example:
-      "I need to be honest with you, because you deserve that. I care about you, and I've enjoyed our time together — but I don't feel about you the way you deserve, and I can't see a future for us. I'm sorry this hurts. I wanted to tell you straight, instead of letting it drag on.",
+      "I need to be honest with you, because you deserve that. I care about you, and I've enjoyed our time together, but I don't feel about you the way you deserve, and I can't see a future for us. I'm sorry this hurts. I wanted to tell you straight, instead of letting it drag on.",
     freshDraft: true,
   },
   {
@@ -236,12 +236,12 @@ export const SAY_IT_SITUATIONS = [
 
 // --- Lesson 15: six qualities ---
 export const GRID_QUALITIES = [
-  { key: "admire", label: "Admire", hint: "Warm, mutual respect — a talent, how they are with others, something that inspires you." },
-  { key: "values", label: "Values", hint: "Things that matter to you that they share — faith, politics, ethics, how they see the world." },
-  { key: "trust", label: "Trust", hint: "You feel safe with them. You can talk to them — even if you don't know them well yet." },
+  { key: "admire", label: "Admire", hint: "Warm, mutual respect: a talent, how they are with others, something that inspires you." },
+  { key: "values", label: "Values", hint: "Things that matter to you that they share: faith, politics, ethics, how they see the world." },
+  { key: "trust", label: "Trust", hint: "You feel safe with them. You can talk to them, even if you don't know them well yet." },
   { key: "fun", label: "Fun", hint: "Someone you'd have fun with. Smiling, enjoying themselves, easy to be around." },
-  { key: "work", label: "Work ethic", hint: "Relational work ethic — do they put work into their relationships and keep their commitments?" },
-  { key: "attraction", label: "Attraction", hint: "Still important, even in the world of happy. One quality among a balanced mix — not the whole list." },
+  { key: "work", label: "Work ethic", hint: "Relational work ethic: do they put work into their relationships and keep their commitments?" },
+  { key: "attraction", label: "Attraction", hint: "Still important, even in the world of happy. One quality among a balanced mix, not the whole list." },
 ];
 
 // --- Lesson 18: dates ---

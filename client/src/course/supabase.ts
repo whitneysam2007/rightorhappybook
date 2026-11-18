@@ -18,7 +18,7 @@ export async function upsertProfile(user: User): Promise<void> {
       .from("profiles")
       .upsert({ id: user.id, email: user.email }, { onConflict: "id" });
   } catch {
-    // profiles table or policy not ready yet — the course still works
+    // profiles table or policy not ready yet, the course still works
   }
 }
 

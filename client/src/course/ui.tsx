@@ -56,7 +56,7 @@ export function VideoEmbed({ videoKey, title }: { videoKey: keyof typeof VIDEOS;
         />
       </div>
       <p className="px-4 py-2 text-xs text-muted-foreground">
-        Video · {v.minutes} · Streams from Google Drive for now — a permanent home for the videos is still to come.
+        Video · {v.minutes} · Streams from Google Drive for now. A permanent home for the videos is still to come.
       </p>
     </div>
   );
@@ -70,8 +70,8 @@ export function ModeBadge({ mode }: { mode: string }) {
   );
 }
 
-// Applying work sits on its own raised panel — a touch lighter neutral dark
-// gray than the lesson panel, with a gold left edge — so learning and
+// Applying work sits on its own raised panel, a touch lighter neutral dark
+// gray than the lesson panel, with a gold left edge, so learning and
 // applying are easy to tell apart at a glance. No gold tint in the surface
 // itself; the border and fill are strictly neutral.
 export function ApplyBlock({ label, children }: { label: string; children: React.ReactNode }) {
@@ -107,7 +107,7 @@ export function LessonNav({ lessonId, onDone, isDone }: { lessonId: number; onDo
         </Link>
       ) : isDone ? (
         <span className="inline-flex items-center gap-2 text-sm text-primary">
-          <Check className="h-4 w-4" /> That's the course — now go live it.
+          <Check className="h-4 w-4" /> That's the course. Now go live it.
         </span>
       ) : (
         <button
