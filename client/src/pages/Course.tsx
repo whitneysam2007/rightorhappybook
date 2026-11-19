@@ -137,13 +137,18 @@ function StartButton({ label = "Start the Course" }: { label?: string }) {
   );
   // Buy goes to Stripe checkout when the Payment Link is set.
   // If the link is ever unset, the button falls back to the course itself.
-  if (STRIPE_PAYMENT_LINK) {
-    return <a href={STRIPE_PAYMENT_LINK}>{button}</a>;
-  }
+  const buy = STRIPE_PAYMENT_LINK ? (
+    <a href={STRIPE_PAYMENT_LINK}>{button}</a>
+  ) : (
+    <Link href="/course/learn">{button}</Link>
+  );
   return (
-    <Link href="/course/learn">
-      {button}
-    </Link>
+    <div>
+      {buy}
+      <Link href="/course/login" className="mt-3 block text-sm text-muted-foreground hover:underline">
+        Already signed up? Click here to log in
+      </Link>
+    </div>
   );
 }
 
@@ -459,12 +464,6 @@ export default function Course() {
                 within 7 days of buying, and I will refund your $49.99.
               </p>
               <StartButton label="Start the Course · $49.99" />
-              <p className="text-sm text-muted-foreground mt-4">
-                Already have the course?{" "}
-                <Link href="/course/login" className="text-primary hover:underline">
-                  Log in
-                </Link>
-              </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8 text-sm text-muted-foreground">
               <span className="flex items-center gap-2">
