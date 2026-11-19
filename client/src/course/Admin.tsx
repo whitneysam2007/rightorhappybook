@@ -28,6 +28,11 @@ export default function Admin() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [progress, setProgress] = useState<Record<string, Progress>>({});
   const [progressReady, setProgressReady] = useState(false);
+  // Settle flags, separate from the data: while a fetch is still in flight
+  // the page must show a loading state, never an empty state built from
+  // the initial empty data.
+  const [profilesReady, setProfilesReady] = useState(false);
+  const [progressSettled, setProgressSettled] = useState(false);
   const [fetchError, setFetchError] = useState("");
   const [search, setSearch] = useState("");
 
@@ -44,22 +49,29 @@ export default function Admin() {
           setFetchError(
             "Couldn't load the student list. If the profiles table was just set up, give it a minute and refresh.",
           );
-          return;
+        } else {
+          setProfiles((data ?? []) as Profile[]);
         }
-        setProfiles((data ?? []) as Profile[]);
+        setProfilesReady(true);
       });
     // Progress lives in its own table; if it isn't set up yet, the
     // student list still works and the page says so instead of failing.
+    // The "not set up" message only shows after this fetch settles with
+    // an error, never while it is still loading.
     supabase
       .from("course_progress")
       .select("user_id, completed, updated_at")
       .then(({ data, error }) => {
         if (!alive) return;
-        if (error) return;
+        if (error) {
+          setProgressSettled(true);
+          return;
+        }
         const byUser: Record<string, Progress> = {};
         for (const row of (data ?? []) as Progress[]) byUser[row.user_id] = row;
         setProgress(byUser);
         setProgressReady(true);
+        setProgressSettled(true);
       });
     return () => {
       alive = false;
@@ -101,60 +113,68 @@ export default function Admin() {
           Course Admin
         </p>
         <h1 className="mb-2 font-serif text-3xl font-bold leading-tight md:text-4xl">Students</h1>
-        <p className="mb-1 text-muted-foreground">
-          {profiles.length} {profiles.length === 1 ? "student" : "students"}
-        </p>
-        {progressReady ? (
-          <p className="mb-6 text-sm text-muted-foreground">
-            {started} started · {finished} finished the course
-          </p>
+        {!profilesReady ? (
+          <p className="text-muted-foreground">Loading students…</p>
         ) : (
-          <p className="mb-6 text-sm text-muted-foreground">
-            Course progress isn&rsquo;t set up yet. Once the course_progress table exists in Supabase,
-            each student&rsquo;s progress shows here.
-          </p>
-        )}
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by email…"
-          aria-label="Search students by email"
-          className="mb-4 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm"
-        />
-        {fetchError ? (
-          <p className="rounded-lg border border-border bg-card px-4 py-3 text-sm">{fetchError}</p>
-        ) : filtered.length === 0 ? (
-          <p className="text-muted-foreground">
-            {profiles.length === 0 ? "No students yet." : "No one matches that search."}
-          </p>
-        ) : (
-          <div className="space-y-2">
-            {filtered.map((p) => {
-              const prog = progress[p.id];
-              const done = prog?.completed.length ?? 0;
-              return (
-                <div
-                  key={p.id}
-                  className="rounded-lg border border-[oklch(0.4_0_0)] bg-[oklch(0.2_0_0)] px-4 py-3 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.8)]"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="min-w-0 flex-1 break-all font-medium">{p.email}</span>
-                    {progressReady && (
-                      <span className="shrink-0 text-sm font-medium">
-                        {done} of {LESSONS.length} done
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Joined {formatDate(p.created_at)}
-                    {progressReady &&
-                      ` · Last active ${prog ? formatDate(prog.updated_at) : "—"}`}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+          <>
+            <p className="mb-1 text-muted-foreground">
+              {profiles.length} {profiles.length === 1 ? "student" : "students"}
+            </p>
+            {progressReady ? (
+              <p className="mb-6 text-sm text-muted-foreground">
+                {started} started · {finished} finished the course
+              </p>
+            ) : progressSettled ? (
+              <p className="mb-6 text-sm text-muted-foreground">
+                Course progress isn&rsquo;t set up yet. Once the course_progress table exists in
+                Supabase, each student&rsquo;s progress shows here.
+              </p>
+            ) : (
+              <p className="mb-6 text-sm text-muted-foreground">Loading progress…</p>
+            )}
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by email…"
+              aria-label="Search students by email"
+              className="mb-4 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm"
+            />
+            {fetchError ? (
+              <p className="rounded-lg border border-border bg-card px-4 py-3 text-sm">{fetchError}</p>
+            ) : filtered.length === 0 ? (
+              <p className="text-muted-foreground">
+                {profiles.length === 0 ? "No students yet." : "No one matches that search."}
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {filtered.map((p) => {
+                  const prog = progress[p.id];
+                  const done = prog?.completed.length ?? 0;
+                  return (
+                    <div
+                      key={p.id}
+                      className="rounded-lg border border-[oklch(0.4_0_0)] bg-[oklch(0.2_0_0)] px-4 py-3 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.8)]"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="min-w-0 flex-1 break-all font-medium">{p.email}</span>
+                        {progressReady && (
+                          <span className="shrink-0 text-sm font-medium">
+                            {done} of {LESSONS.length} done
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        Joined {formatDate(p.created_at)}
+                        {progressReady &&
+                          ` · Last active ${prog ? formatDate(prog.updated_at) : "—"}`}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
