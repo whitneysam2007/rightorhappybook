@@ -1,6 +1,7 @@
 // Supabase client + the thin auth hook used by the course pages.
 // Sessions live in the browser (Supabase stores the token in localStorage).
-// Lesson progress still lives in the course's own localStorage key (store.ts).
+// Lesson answers still live in the course's own localStorage key (store.ts);
+// only the list of finished lesson ids is shared, for the admin page.
 
 import { useEffect, useRef, useState } from "react";
 import { createClient, type Session, type User } from "@supabase/supabase-js";
@@ -19,6 +20,21 @@ export async function upsertProfile(user: User): Promise<void> {
       .upsert({ id: user.id, email: user.email }, { onConflict: "id" });
   } catch {
     // profiles table or policy not ready yet, the course still works
+  }
+}
+
+// Lesson progress for the admin page: the learner's finished lesson ids,
+// in public.course_progress (one row per learner). Same quiet rule as
+// upsertProfile: a failure here must never block the course, and
+// localStorage stays the source of truth on the learner's own device.
+export async function syncProgress(userId: string, completed: number[]): Promise<void> {
+  try {
+    await supabase.from("course_progress").upsert(
+      { user_id: userId, completed, updated_at: new Date().toISOString() },
+      { onConflict: "user_id" },
+    );
+  } catch {
+    // progress table or policy not ready yet, the course still works
   }
 }
 

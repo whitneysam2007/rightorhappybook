@@ -71,7 +71,7 @@ const notForYou = [
 ];
 
 const included = [
-  "18 lessons across 5 modules, self-paced",
+  "18 lessons, self-paced",
   "10 short videos",
   "The full e-book, How to Date Authentically, to read inside the course",
   "Interactive tools you use: your story, your needs and nopes, your questions, your words, your dates",
@@ -111,6 +111,10 @@ const faqs = [
   {
     q: "What if it doesn't work for me?",
     a: "Let me level with you. I can't promise you'll meet someone. Nobody can. What I can promise is a different way of dating. One where you stop performing, start seeing people as people, and say what you actually mean. That's the part I can teach. The rest is up to you, and up to who you meet along the way.",
+  },
+  {
+    q: "Is there a money-back guarantee?",
+    a: "Yes. You get 7 days. Try the whole course, and if it is not for you, email hello@rightorhappybook.com within 7 days of buying and I will refund your $49.99.",
   },
   {
     q: "I already bought the course on Thinkific. Do I have to pay again?",
@@ -165,7 +169,7 @@ export default function Course() {
               </span>
               <span className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4 text-primary" />
-                18 lessons · 5 modules
+                18 lessons
               </span>
               <span className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-primary" />
@@ -447,6 +451,13 @@ export default function Course() {
               <p className="text-muted-foreground leading-relaxed max-w-md mx-auto mb-8">
                 That&rsquo;s less than an hour with a dating coach. Most charge $80 or more an hour. Less than a few bad
                 dates. And it&rsquo;s yours to come back to, for as long as you need it.
+              </p>
+              <p className="text-muted-foreground leading-relaxed max-w-md mx-auto mb-8">
+                Try the whole course for 7 days. If it is not for you, email{" "}
+                <a href="mailto:hello@rightorhappybook.com" className="text-primary hover:underline">
+                  hello@rightorhappybook.com
+                </a>{" "}
+                within 7 days of buying, and I will refund your $49.99.
               </p>
               <StartButton label="Start the Course · $49.99" />
               <p className="text-xs text-muted-foreground mt-4">Preview build. The payment step comes next.</p>

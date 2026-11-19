@@ -5,7 +5,7 @@ import { Link, useLocation, useParams } from "wouter";
 import { ArrowRight, BookOpen, Check, ChevronDown, ChevronRight, Clock, Play } from "lucide-react";
 import { LESSONS, MODULES, PDFS, lessonById } from "./data";
 import { useCourseState } from "./store";
-import { supabase } from "./supabase";
+import { supabase, useAuth } from "./supabase";
 import { ApplyBlock, Chip, ChipRow, LessonNav, ModeBadge, VideoEmbed } from "./ui";
 import {
   ActionPlan,
@@ -115,7 +115,8 @@ function PathCheck() {
 export default function CoursePlayer() {
   const params = useParams<{ lessonId?: string }>();
   const [, setLocation] = useLocation();
-  const { state, update, toggleIn, markComplete } = useCourseState();
+  const { user } = useAuth();
+  const { state, update, toggleIn, markComplete } = useCourseState(user?.id ?? null);
   const logOut = async () => {
     await supabase.auth.signOut();
     setLocation("/course/login");
@@ -141,8 +142,8 @@ export default function CoursePlayer() {
             Ten short videos, five tools, and one action plan. Each lesson has two parts: learning (what Sam teaches) and applying (doing something with it). Your answers stay on your device.
           </p>
           <div className="mb-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-2"><Play className="h-4 w-4 text-primary" /> 10 videos · 41.7 minutes</span>
-            <span className="inline-flex items-center gap-2"><BookOpen className="h-4 w-4 text-primary" /> 18 lessons · 5 modules</span>
+            <span className="inline-flex items-center gap-2"><Play className="h-4 w-4 text-primary" /> 10 videos</span>
+            <span className="inline-flex items-center gap-2"><BookOpen className="h-4 w-4 text-primary" /> {LESSONS.length} lessons</span>
             <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> Self-paced · lifetime access</span>
           </div>
           <div className="mb-8">

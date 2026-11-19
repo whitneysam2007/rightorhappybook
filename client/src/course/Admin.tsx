@@ -1,12 +1,15 @@
 // Admin page (/course/admin). Sam's view of his students: email + signup
-// date, newest first, with a count and a search box. Thin on purpose:
-// no edit, no delete. Only the course-owner emails may see it; anyone else
-// logged in gets a plain message. Not linked from the course nav.
+// date + course progress, newest first, with a count, a started/finished
+// summary, and a search box. Thin on purpose: no edit, no delete. Only
+// the course-owner emails may see it; anyone else logged in gets a plain
+// message. Not linked from the course nav.
 import { useEffect, useState } from "react";
 import { supabase, useAuth } from "./supabase";
 import { ADMIN_EMAILS } from "./config";
+import { LESSONS } from "./data";
 
 type Profile = { id: string; email: string; created_at: string };
+type Progress = { user_id: string; completed: number[]; updated_at: string };
 
 function formatDate(iso: string) {
   try {
@@ -23,6 +26,8 @@ function formatDate(iso: string) {
 export default function Admin() {
   const { user, loading } = useAuth();
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [progress, setProgress] = useState<Record<string, Progress>>({});
+  const [progressReady, setProgressReady] = useState(false);
   const [fetchError, setFetchError] = useState("");
   const [search, setSearch] = useState("");
 
@@ -42,6 +47,19 @@ export default function Admin() {
           return;
         }
         setProfiles((data ?? []) as Profile[]);
+      });
+    // Progress lives in its own table; if it isn't set up yet, the
+    // student list still works and the page says so instead of failing.
+    supabase
+      .from("course_progress")
+      .select("user_id, completed, updated_at")
+      .then(({ data, error }) => {
+        if (!alive) return;
+        if (error) return;
+        const byUser: Record<string, Progress> = {};
+        for (const row of (data ?? []) as Progress[]) byUser[row.user_id] = row;
+        setProgress(byUser);
+        setProgressReady(true);
       });
     return () => {
       alive = false;
@@ -69,6 +87,12 @@ export default function Admin() {
   const filtered = profiles.filter((p) =>
     p.email.toLowerCase().includes(search.trim().toLowerCase()),
   );
+  const started = profiles.filter(
+    (p) => (progress[p.id]?.completed.length ?? 0) >= 1,
+  ).length;
+  const finished = profiles.filter(
+    (p) => (progress[p.id]?.completed.length ?? 0) >= LESSONS.length,
+  ).length;
 
   return (
     <div className="container py-10">
@@ -77,9 +101,19 @@ export default function Admin() {
           Course Admin
         </p>
         <h1 className="mb-2 font-serif text-3xl font-bold leading-tight md:text-4xl">Students</h1>
-        <p className="mb-6 text-muted-foreground">
+        <p className="mb-1 text-muted-foreground">
           {profiles.length} {profiles.length === 1 ? "student" : "students"}
         </p>
+        {progressReady ? (
+          <p className="mb-6 text-sm text-muted-foreground">
+            {started} started · {finished} finished the course
+          </p>
+        ) : (
+          <p className="mb-6 text-sm text-muted-foreground">
+            Course progress isn&rsquo;t set up yet. Once the course_progress table exists in Supabase,
+            each student&rsquo;s progress shows here.
+          </p>
+        )}
         <input
           type="search"
           value={search}
@@ -96,17 +130,30 @@ export default function Admin() {
           </p>
         ) : (
           <div className="space-y-2">
-            {filtered.map((p) => (
-              <div
-                key={p.id}
-                className="flex items-center justify-between gap-3 rounded-lg border border-[oklch(0.4_0_0)] bg-[oklch(0.2_0_0)] px-4 py-3 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.8)]"
-              >
-                <span className="min-w-0 flex-1 break-all font-medium">{p.email}</span>
-                <span className="shrink-0 text-sm text-muted-foreground">
-                  {formatDate(p.created_at)}
-                </span>
-              </div>
-            ))}
+            {filtered.map((p) => {
+              const prog = progress[p.id];
+              const done = prog?.completed.length ?? 0;
+              return (
+                <div
+                  key={p.id}
+                  className="rounded-lg border border-[oklch(0.4_0_0)] bg-[oklch(0.2_0_0)] px-4 py-3 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.8)]"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="min-w-0 flex-1 break-all font-medium">{p.email}</span>
+                    {progressReady && (
+                      <span className="shrink-0 text-sm font-medium">
+                        {done} of {LESSONS.length} done
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Joined {formatDate(p.created_at)}
+                    {progressReady &&
+                      ` · Last active ${prog ? formatDate(prog.updated_at) : "—"}`}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

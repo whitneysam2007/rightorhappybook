@@ -1,9 +1,13 @@
 // Course answers live on the learner's own device (localStorage only).
-// Nothing is sent anywhere. Lesson 18 offers "email me my action plan"
-// as a mailto compose (interim, a real send comes later).
+// Nothing about the answers is sent anywhere. The one exception is the
+// list of finished lesson ids, which syncs quietly to Supabase (see
+// syncProgress in supabase.ts) so the admin page can show each student's
+// progress. Lesson 18 offers "email me my action plan" as a mailto
+// compose (interim, a real send comes later).
 
 import { useCallback, useEffect, useState } from "react";
 import { SAM_MANTRA } from "./data";
+import { syncProgress } from "./supabase";
 
 export type Reflection = Record<string, string> & { date: string; name: string };
 
@@ -73,8 +77,9 @@ function load(): CourseState {
   }
 }
 
-export function useCourseState() {
+export function useCourseState(userId: string | null = null) {
   const [state, setState] = useState<CourseState>(load);
+  const completed = state.completed;
 
   useEffect(() => {
     try {
@@ -83,6 +88,15 @@ export function useCourseState() {
       // storage full or unavailable, answers just don't persist
     }
   }, [state]);
+
+  // Share finished lessons with the admin page: upsert the progress row
+  // whenever the completed list changes, and once when the session loads
+  // (that backfills whatever progress is already on this device). Only
+  // when a session exists; a failed upsert never blocks the learner.
+  useEffect(() => {
+    if (!userId) return;
+    void syncProgress(userId, completed);
+  }, [userId, completed]);
 
   const update = useCallback((patch: Partial<CourseState>) => {
     setState((s) => ({ ...s, ...patch }));
