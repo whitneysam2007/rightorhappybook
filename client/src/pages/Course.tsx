@@ -122,7 +122,7 @@ const faqs = [
   },
   {
     q: "Can I enroll right now?",
-    a: "Almost. This is a preview of the new course. The payment step comes next. You can look through the course now, and enrollment opens as soon as checkout is ready.",
+    a: "Yes. Click the Buy button, pay $49.99 once, and it takes you to a signup page to create your account. Then you are in and can start right away.",
   },
 ];
 
@@ -135,8 +135,8 @@ function StartButton({ label = "Start the Course" }: { label?: string }) {
       {label} <ArrowRight className="ml-2 h-4 w-4" />
     </Button>
   );
-  // Once the Stripe Payment Link is set, Buy goes to Stripe checkout.
-  // Until then, the preview behavior stays: straight into the course.
+  // Buy goes to Stripe checkout when the Payment Link is set.
+  // If the link is ever unset, the button falls back to the course itself.
   if (STRIPE_PAYMENT_LINK) {
     return <a href={STRIPE_PAYMENT_LINK}>{button}</a>;
   }
@@ -184,7 +184,6 @@ export default function Course() {
               <p className="text-3xl font-serif font-bold mb-1">$49.99</p>
               <p className="text-sm text-muted-foreground mb-6">Lifetime access. One payment. No subscription.</p>
               <StartButton />
-              <p className="text-xs text-muted-foreground mt-4">Preview build. The payment step comes next.</p>
             </div>
           </div>
         </div>
@@ -466,7 +465,6 @@ export default function Course() {
                   Log in
                 </Link>
               </p>
-              <p className="text-xs text-muted-foreground mt-4">Preview build. The payment step comes next.</p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8 text-sm text-muted-foreground">
               <span className="flex items-center gap-2">
@@ -509,7 +507,6 @@ export default function Course() {
               Your next date could be the first one where you&rsquo;re actually yourself. That&rsquo;s worth $49.99.
             </p>
             <StartButton label="Start the Course · $49.99" />
-            <p className="text-xs text-muted-foreground mt-4">Preview build. The payment step comes next.</p>
             <p className="mt-10 text-muted-foreground">Sam</p>
           </div>
         </div>
