@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { SAM_MANTRA } from "./data";
-import { syncProgress } from "./supabase";
+import { fetchCloudProgress, syncProgress } from "./supabase";
 
 export type Reflection = Record<string, string> & { date: string; name: string };
 
@@ -79,6 +79,7 @@ function load(): CourseState {
 
 export function useCourseState(userId: string | null = null) {
   const [state, setState] = useState<CourseState>(load);
+  const [hydrated, setHydrated] = useState(false);
   const completed = state.completed;
 
   useEffect(() => {
@@ -89,14 +90,42 @@ export function useCourseState(userId: string | null = null) {
     }
   }, [state]);
 
-  // Share finished lessons with the admin page: upsert the progress row
-  // whenever the completed list changes, and once when the session loads
-  // (that backfills whatever progress is already on this device). Only
-  // when a session exists; a failed upsert never blocks the learner.
+  // On session load, pull the cloud progress first and merge it with
+  // whatever is on this device (union of both lesson lists). The device
+  // adopts the merged list, so progress made on another device is kept
+  // and a fresh browser with an empty list can never wipe it. A failed
+  // fetch (table or policy not ready) just means no cloud list to merge.
   useEffect(() => {
     if (!userId) return;
+    let alive = true;
+    setHydrated(false);
+    void fetchCloudProgress(userId).then((cloud) => {
+      if (!alive) return;
+      if (cloud) {
+        setState((s) => {
+          const merged = [...new Set([...s.completed, ...cloud])].sort((a, b) => a - b);
+          const same =
+            merged.length === s.completed.length &&
+            merged.every((v, i) => v === s.completed[i]);
+          return same ? s : { ...s, completed: merged };
+        });
+      }
+      setHydrated(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [userId]);
+
+  // Share finished lessons with the admin page: upsert the progress row
+  // whenever the completed list changes. Gated on the cloud merge above
+  // having settled, so the device's pre-merge list (possibly empty) is
+  // never written over a non-empty cloud row. Only when a session
+  // exists; a failed upsert never blocks the learner.
+  useEffect(() => {
+    if (!userId || !hydrated) return;
     void syncProgress(userId, completed);
-  }, [userId, completed]);
+  }, [userId, completed, hydrated]);
 
   const update = useCallback((patch: Partial<CourseState>) => {
     setState((s) => ({ ...s, ...patch }));
