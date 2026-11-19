@@ -55,9 +55,6 @@ export function VideoEmbed({ videoKey, title }: { videoKey: keyof typeof VIDEOS;
           allowFullScreen
         />
       </div>
-      <p className="px-4 py-2 text-xs text-muted-foreground">
-        Video · {v.minutes} · Streams from Google Drive for now. A permanent home for the videos is still to come.
-      </p>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, Star } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Book() {
@@ -20,8 +20,8 @@ export default function Book() {
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <BookOpen className="h-4 w-4 text-primary" />
-                  <span>85 Pages</span>
+                  <Star className="h-4 w-4 text-primary" />
+                  <span>4.9 stars</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Star className="h-4 w-4 text-primary" />
