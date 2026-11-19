@@ -9,6 +9,6 @@ export const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_jPELlDwVXMb7tE9cL--Shg_n
 export const ADMIN_EMAILS = ["whitney.sam@gmail.com", "authenticdating24@gmail.com"];
 
 // Stripe Payment Link for the $49.99 one-time checkout.
-// TEST-MODE link only (Stripe account "The Finished Peace, LLC", sandbox):
-// it takes test cards, no real money. Swap this for the live link before launch.
-export const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/test_00waEY8z12rn8qP14a3AY00";
+// LIVE link (Stripe account "The Finished Peace, LLC"): real money.
+// Verified live in a browser 2026-11-19: live-mode checkout, $49.99 one-time.
+export const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aFa28t9fEgMJ1Oc5m5awo00";

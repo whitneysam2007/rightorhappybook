@@ -122,7 +122,7 @@ const faqs = [
   },
   {
     q: "Can I enroll right now?",
-    a: "Yes. Click the Buy button, pay $49.99 once, and it takes you to a signup page to create your account. Then you are in and can start right away.",
+    a: "Yes. Click Start the Course, pay $49.99 once, and it takes you to a signup page to create your account. Then you are in and can start right away.",
   },
 ];
 
