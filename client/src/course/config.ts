@@ -11,4 +11,4 @@ export const ADMIN_EMAILS = ["whitney.sam@gmail.com", "authenticdating24@gmail.c
 // Stripe Payment Link for the $49.99 one-time checkout.
 // LIVE link (Stripe account "The Finished Peace, LLC"): real money.
 // Verified live in a browser 2026-11-19: live-mode checkout, $49.99 one-time.
-export const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/aFa28t9fEgMJ1Oc5m5awo00";
+export const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU6oH4di4lA0u08m9gYU02";
