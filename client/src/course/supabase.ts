@@ -23,10 +23,30 @@ export async function upsertProfile(user: User): Promise<void> {
   }
 }
 
+// Read the learner's cloud progress row, if one exists. Returns the
+// finished lesson ids, or null when there is no row yet or the table
+// isn't reachable. Quiet on purpose, like syncProgress: the caller
+// treats null as "no cloud progress to merge" and carries on.
+export async function fetchCloudProgress(userId: string): Promise<number[] | null> {
+  try {
+    const { data, error } = await supabase
+      .from("course_progress")
+      .select("completed")
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (error || !data) return null;
+    return Array.isArray(data.completed) ? (data.completed as number[]) : null;
+  } catch {
+    return null;
+  }
+}
+
 // Lesson progress for the admin page: the learner's finished lesson ids,
 // in public.course_progress (one row per learner). Same quiet rule as
-// upsertProfile: a failure here must never block the course, and
-// localStorage stays the source of truth on the learner's own device.
+// upsertProfile: a failure here must never block the course. The store
+// merges the cloud row with the device's list on load (see store.ts),
+// so this upsert only ever writes a merged list, never a bare device
+// list that could wipe progress made on another device.
 export async function syncProgress(userId: string, completed: number[]): Promise<void> {
   try {
     await supabase.from("course_progress").upsert(
