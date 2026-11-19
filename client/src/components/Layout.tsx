@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { useState } from "react";
 import { Menu, X, Instagram } from "lucide-react";
+import HelpButton from "../course/HelpButton";
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   const [location] = useLocation();
@@ -17,6 +18,8 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [location] = useLocation();
+  const isCourse = location === "/course" || location.startsWith("/course/");
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -111,6 +114,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+
+      {/* Help button, course screens only */}
+      {isCourse && <HelpButton />}
     </div>
   );
 }
