@@ -34,9 +34,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <nav className="hidden md:flex items-center gap-8">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/book">Book</NavLink>
-            <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer" className="text-sm font-medium uppercase tracking-wider transition-colors hover:text-primary text-foreground/80">Course</a>
+            <NavLink href="/course">Course</NavLink>
             <NavLink href="/speaking">Speaking</NavLink>
             <NavLink href="/coaching">Coaching</NavLink>
+            <NavLink href="/course/login">Log in</NavLink>
             <Link
               href="/speaking#booking"
               className="px-5 py-2 bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-wider rounded-sm hover:bg-primary/90 transition-colors"
@@ -60,9 +61,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <nav className="md:hidden bg-background border-t border-border/50 px-6 py-6 flex flex-col gap-4">
             <Link href="/" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2">Home</Link>
             <Link href="/book" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2">Book</Link>
-            <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2 hover:text-primary transition-colors">Course</a>
+            <Link href="/course" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2 hover:text-primary transition-colors">Course</Link>
             <Link href="/speaking" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2">Speaking</Link>
             <Link href="/coaching" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2">Coaching</Link>
+            <Link href="/course/login" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2 hover:text-primary transition-colors">Log in</Link>
             <Link
               href="/speaking#booking"
               onClick={() => setMobileOpen(false)}
@@ -87,7 +89,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
               <Link href="/book" className="hover:text-primary transition-colors">Book</Link>
-              <a href="https://sam-s-site-9e21.thinkific.com/courses/HTDAC" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Course</a>
+              <Link href="/course" className="hover:text-primary transition-colors">Course</Link>
               <Link href="/speaking" className="hover:text-primary transition-colors">Speaking</Link>
               <Link href="/coaching" className="hover:text-primary transition-colors">Coaching</Link>
               <Link href="/conference" className="hover:text-primary transition-colors">Conference</Link>
