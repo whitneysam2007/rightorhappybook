@@ -460,6 +460,12 @@ export default function Course() {
                 within 7 days of buying, and I will refund your $49.99.
               </p>
               <StartButton label="Start the Course · $49.99" />
+              <p className="text-sm text-muted-foreground mt-4">
+                Already have the course?{" "}
+                <Link href="/course/login" className="text-primary hover:underline">
+                  Log in
+                </Link>
+              </p>
               <p className="text-xs text-muted-foreground mt-4">Preview build. The payment step comes next.</p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8 text-sm text-muted-foreground">

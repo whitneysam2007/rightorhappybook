@@ -37,6 +37,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <NavLink href="/course">Course</NavLink>
             <NavLink href="/speaking">Speaking</NavLink>
             <NavLink href="/coaching">Coaching</NavLink>
+            <NavLink href="/course/login">Log in</NavLink>
             <Link
               href="/speaking#booking"
               className="px-5 py-2 bg-primary text-primary-foreground text-sm font-semibold uppercase tracking-wider rounded-sm hover:bg-primary/90 transition-colors"
@@ -63,6 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/course" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2 hover:text-primary transition-colors">Course</Link>
             <Link href="/speaking" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2">Speaking</Link>
             <Link href="/coaching" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2">Coaching</Link>
+            <Link href="/course/login" onClick={() => setMobileOpen(false)} className="text-sm font-medium uppercase tracking-wider py-2 hover:text-primary transition-colors">Log in</Link>
             <Link
               href="/speaking#booking"
               onClick={() => setMobileOpen(false)}
