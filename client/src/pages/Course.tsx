@@ -159,7 +159,7 @@ export default function Course() {
               Stop dating to be right. Start dating to be happy.
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed mb-8 max-w-xl mx-auto">
-              Nineteen lessons that help you see the story you&rsquo;re dating with, throw out the parts that don&rsquo;t serve
+              Eighteen lessons that help you see the story you&rsquo;re dating with, throw out the parts that don&rsquo;t serve
               you, and walk into your next date as yourself.
             </p>
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-10 text-sm text-muted-foreground">
@@ -251,7 +251,7 @@ export default function Course() {
             <h2 className="font-serif text-3xl md:text-5xl font-bold mb-8">A course you do</h2>
             <div className="space-y-5 text-lg leading-relaxed text-foreground/90">
               <p>
-                So I built a course that does something about it. Nineteen lessons, and every one of them asks you to do
+                So I built a course that does something about it. Eighteen lessons, and every one of them asks you to do
                 something small. Tap what you recognize. Write what you actually think. Pick what matters. Decide what
                 you&rsquo;ll do next.
               </p>
@@ -308,7 +308,7 @@ export default function Course() {
         <div className="container">
           <div className="text-center mb-16">
             <p className="text-sm uppercase tracking-[0.3em] text-primary font-medium mb-4">What&rsquo;s inside</p>
-            <h2 className="font-serif text-3xl md:text-5xl font-bold">Nineteen lessons. One change.</h2>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold">Eighteen lessons. One change.</h2>
             <p className="text-muted-foreground max-w-xl mx-auto mt-6 leading-relaxed">
               Each module moves you somewhere. Here is where each one takes you, and what you walk away with.
             </p>
